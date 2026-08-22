@@ -49,6 +49,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# Mensajes de commit preparados localmente (herramienta de trabajo, no artefacto)
+.commit-msgs/
+
 # Cache de herramientas
 .eslintcache
 .stylelintcache
