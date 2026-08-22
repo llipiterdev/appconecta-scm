@@ -93,7 +93,8 @@ Diez de los requisitos anteriores cuentan además con verificación end-to-end e
 | #7     | `release/0.1.0` → `develop`       | reintegración de los tres commits anteriores                                | [#22](https://github.com/llipiterdev/appconecta-scm/pull/22) | `6c8bbc5`    | 7 en verde | v0.1.0  |
 | #5     | `feature/virtual-card`            | `51a4c7a`, `660c8fc`, `7f5e959`, `4e0008b`                                  | [#24](https://github.com/llipiterdev/appconecta-scm/pull/24) | `b6874ed`    | 7 en verde | v0.2.0  |
 | #6     | `feature/cd-automation`           | `764ca83`, `9574022`, `0bf54af`                                             | [#25](https://github.com/llipiterdev/appconecta-scm/pull/25) | `bf1e678`    | 7 en verde | v0.2.0  |
-| #9     | `release/0.2.0` → `main`          | `7c52129`, `9bec605`, `b7cf1da`, `4f15dcf`                                  | [#26](https://github.com/llipiterdev/appconecta-scm/pull/26) | `0595748`    | 7 en verde | v0.2.0  |
+| #8     | `release/0.2.0` → `main`          | `7c52129`, `9bec605`, `b7cf1da`, `4f15dcf`                                  | [#26](https://github.com/llipiterdev/appconecta-scm/pull/26) | `0595748`    | 7 en verde | v0.2.0  |
+| #8     | `chore/backmerge-0.2.0`           | `5fea5dc`, `482965d`, `b6c08da`                                             | [#28](https://github.com/llipiterdev/appconecta-scm/pull/28) | `762144a`    | 7 en verde | v0.2.0  |
 | #6     | `hotfix/release-workflow-metrics` | `c5bacba`                                                                   | [#27](https://github.com/llipiterdev/appconecta-scm/pull/27) | `57203ca`    | 7 en verde | v0.2.0  |
 
 El número de checks cambia entre filas y el cambio es real, no un descuido de la tabla. Los tres
@@ -102,7 +103,14 @@ estática, pruebas y build. Al integrarse `feature/ci-pipeline`, el pipeline inc
 de extremo a extremo, las métricas con control de no regresión y la construcción del contenedor, y
 los rulesets de `main` y `develop` pasaron a exigir los siete.
 
-La última fila es el único `hotfix/*` del proyecto y responde a un defecto real, no simulado: el
+**Una discrepancia entre esta tabla y los mensajes de commit.** Los commits de la entrega v0.2.0
+referencian `#9` cuando la issue correspondiente es la `#8`, «Preparación de la versión v0.2.0».
+La `#9` es la deuda reservada para la Actividad 4 y permanece abierta por ese motivo, no porque
+estos cambios la afecten. La tabla registra la issue correcta; los mensajes de commit conservan la
+referencia equivocada porque corregirlos exigiría reescribir historia publicada, que este proyecto
+prohíbe sin excepciones. Se deja constancia aquí en lugar de disimularlo.
+
+El `hotfix/*` es el único del proyecto y responde a un defecto real, no simulado: el
 workflow de publicación de v0.2.0 falló porque ejecutaba el control de no regresión sin haber
 generado antes las mediciones, dejando el release sin artefactos. Se corrigió y la publicación se
 repitió sobre el mismo tag, sin moverlo.
