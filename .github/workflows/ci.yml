@@ -36,12 +36,66 @@ jobs:
       - name: Instalar dependencias
         run: npm ci
 
+      # Los commits ordinarios se validan con el reglamento completo, cabecera y cuerpo.
+      #
+      # Los commits de merge reciben un trato acotado a su cabecera. La razon no es indulgencia:
+      # su cuerpo lo compone GitHub al integrar y, una vez publicado en una rama permanente,
+      # corregirlo exigiria reescribir historia, que es precisamente lo que la estrategia de ramas
+      # prohibe. La cabecera si es responsabilidad de quien integra y se sigue exigiendo.
       - name: Validar mensajes del pull request
         run: |
-          npx commitlint \
-            --from "${{ github.event.pull_request.base.sha }}" \
-            --to "${{ github.event.pull_request.head.sha }}" \
-            --verbose
+          base='${{ github.event.pull_request.base.sha }}'
+          head='${{ github.event.pull_request.head.sha }}'
+          commitlint=./node_modules/.bin/commitlint
+          fallos=0
+
+          validar() {
+            local sha="$1" alcance="$2" mensaje
+            if [ "$alcance" = "cabecera" ]; then
+              mensaje=$(git log -1 --format=%s "$sha")
+            else
+              mensaje=$(git log -1 --format=%B "$sha")
+            fi
+
+            if printf '%s\n' "$mensaje" | "$commitlint" --verbose > /tmp/commitlint.out 2>&1; then
+              echo "ok      $(git log -1 --format=%h "$sha")  $(git log -1 --format=%s "$sha")"
+            else
+              echo "fallo   $(git log -1 --format=%h "$sha")  $(git log -1 --format=%s "$sha")"
+              sed 's/^/        /' /tmp/commitlint.out
+              fallos=$((fallos + 1))
+            fi
+          }
+
+          echo "== Commits ordinarios (cabecera y cuerpo) =="
+          ordinarios=0
+          for sha in $(git rev-list --no-merges "$base..$head"); do
+            validar "$sha" completo
+            ordinarios=$((ordinarios + 1))
+          done
+
+          echo "== Commits de merge (solo cabecera) =="
+          merges=0
+          for sha in $(git rev-list --merges "$base..$head"); do
+            validar "$sha" cabecera
+            merges=$((merges + 1))
+          done
+
+          {
+            echo "### Mensajes de commit"
+            echo ""
+            echo "| Alcance de la validacion | Commits |"
+            echo "| --- | --- |"
+            echo "| Ordinarios: cabecera y cuerpo | $ordinarios |"
+            echo "| Merge: solo cabecera | $merges |"
+            echo ""
+            if [ "$fallos" -eq 0 ]; then
+              echo "Todos los mensajes cumplen Conventional Commits."
+            else
+              echo "**$fallos mensajes incumplen la convencion.** El detalle esta en el log del job."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          [ "$fallos" -eq 0 ]
 
   quality:
     name: Calidad estatica
