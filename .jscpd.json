@@ -1,0 +1,11 @@
+{
+  "pattern": "src/**/*.{ts,tsx}",
+  "ignore": ["**/*.test.ts", "**/*.test.tsx", "src/test/**"],
+  "format": ["typescript", "tsx"],
+  "minLines": 5,
+  "minTokens": 50,
+  "reporters": ["json", "console"],
+  "output": "reports/duplication",
+  "absolute": false,
+  "gitignore": true
+}
