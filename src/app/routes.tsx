@@ -1,7 +1,6 @@
 import type { RouteObject } from 'react-router';
 
 import { NotFoundPage } from '@/app/NotFoundPage';
-import { PendingSectionPage } from '@/app/PendingSectionPage';
 import { AppShell } from '@/components/layout/AppShell';
 import { AnnouncementsPage } from '@/pages/AnnouncementsPage';
 import { DashboardPage } from '@/pages/DashboardPage';
@@ -11,6 +10,7 @@ import { PayrollPage } from '@/pages/PayrollPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { RequestStatusPage } from '@/pages/RequestStatusPage';
 import { RequestsPage } from '@/pages/RequestsPage';
+import { VirtualCardPage } from '@/pages/VirtualCardPage';
 
 export const routes: RouteObject[] = [
   {
@@ -21,7 +21,7 @@ export const routes: RouteObject[] = [
       { path: 'documentos', Component: DocumentsPage },
       { path: 'nomina', Component: PayrollPage },
       { path: 'solicitudes', Component: RequestsPage },
-      { path: 'carne', Component: PendingSectionPage },
+      { path: 'carne', Component: VirtualCardPage },
       { path: 'incapacidades', Component: MedicalLeavesPage },
       { path: 'estado-solicitudes', Component: RequestStatusPage },
       { path: 'noticias', Component: AnnouncementsPage },

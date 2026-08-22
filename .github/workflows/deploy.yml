@@ -1,0 +1,138 @@
+name: Despliegue en GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Los despliegues no se cancelan entre si. Cancelar uno en curso puede dejar el entorno en un
+# estado intermedio, y a diferencia de una validacion, repetirla no es gratis: el usuario final
+# estaria viendo el resultado a medias.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Construir el artefacto de despliegue
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout del codigo
+        uses: actions/checkout@v5
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      # Se revalida antes de desplegar aunque el pull request ya haya pasado por CI. El artefacto
+      # que llega al usuario debe construirse desde un arbol verificado, no desde la confianza en
+      # que alguien lo verifico antes.
+      - name: Validaciones criticas
+        run: |
+          npm run lint
+          npm run typecheck
+          npm run test
+
+      # GitHub Pages sirve el proyecto desde un subdirectorio. Vite incrusta el base path en los
+      # assets durante la construccion, de modo que debe fijarse aqui y no en el servidor.
+      - name: Construir la aplicacion
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
+        run: npm run build
+
+      # El fallback de rutas del cliente ya viaja en el artefacto: public/404.html redirige la ruta
+      # solicitada al index conservandola como parametro, y src/app/spaRedirect.ts la restaura al
+      # arrancar. Sustituirlo aqui por una copia de index.html romperia esa cadena y el enlace
+      # directo a una seccion aterrizaria en el inicio.
+      - name: Verificar que el fallback de rutas viaja en el artefacto
+        run: |
+          test -f dist/404.html || {
+            echo "Falta dist/404.html: los enlaces directos a una seccion devolverian 404."
+            exit 1
+          }
+          echo "Fallback de rutas presente."
+
+      - name: Registrar la procedencia del artefacto
+        run: |
+          version=$(node -p "require('./package.json').version")
+          {
+            echo "### Artefacto de despliegue"
+            echo ""
+            echo "| Dato | Valor |"
+            echo "| --- | --- |"
+            echo "| Version | \`$version\` |"
+            echo "| Commit | \`${{ github.sha }}\` |"
+            echo "| Base path | \`/${{ github.event.repository.name }}/\` |"
+            echo "| Tamano | $(du -sh dist | cut -f1) |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Publicar el artefacto
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    name: Desplegar y verificar
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Desplegar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      # Un despliegue que reporta exito no demuestra que la aplicacion responda. La propagacion en
+      # Pages no es inmediata, de modo que el smoke test reintenta en lugar de fallar al primer
+      # intento por una condicion transitoria.
+      - name: Smoke test del despliegue
+        run: |
+          url='${{ steps.deployment.outputs.page_url }}'
+          echo "Verificando $url"
+
+          for intento in $(seq 1 10); do
+            codigo=$(curl --silent --location --output /tmp/pagina.html \
+              --write-out '%{http_code}' "$url" || echo "000")
+
+            if [ "$codigo" = "200" ] && grep -q 'AppConecta' /tmp/pagina.html; then
+              echo "La aplicacion responde y sirve contenido de AppConecta (intento $intento)."
+              {
+                echo "### Smoke test"
+                echo ""
+                echo "| Dato | Valor |"
+                echo "| --- | --- |"
+                echo "| URL | $url |"
+                echo "| Codigo HTTP | $codigo |"
+                echo "| Intentos necesarios | $intento |"
+                echo "| Commit desplegado | \`${{ github.sha }}\` |"
+              } >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+
+            echo "Intento $intento: codigo $codigo. Reintentando en 15 s."
+            sleep 15
+          done
+
+          echo "El despliegue no respondio correctamente tras 10 intentos."
+          echo "Ultimo codigo HTTP: $codigo"
+          exit 1

@@ -1,0 +1,184 @@
+name: Publicacion de version
+
+on:
+  push:
+    # Solo versiones liberadas. Un tag de candidato como v0.2.0-rc.1 identifica una baseline de
+    # desarrollo, no una entrega: no debe producir un release ni publicar una imagen. El patron
+    # exige que el ref termine en el numero de parche, de modo que cualquier sufijo de
+    # pre-release queda fuera.
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verificar la version etiquetada
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Checkout del codigo
+        uses: actions/checkout@v5
+
+      # Un tag que no coincide con package.json produce una version imposible de rastrear: el
+      # release dice una cosa y el artefacto otra. Es el error mas facil de cometer al liberar y
+      # el mas caro de descubrir despues, de modo que se comprueba antes que nada.
+      - name: Validar el formato y la coincidencia con package.json
+        id: version
+        run: |
+          tag="${GITHUB_REF#refs/tags/}"
+          version="${tag#v}"
+
+          if ! printf '%s' "$version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "El tag $tag no sigue el formato SemVer vX.Y.Z."
+            exit 1
+          fi
+
+          declarada=$(node -p "require('./package.json').version")
+
+          if [ "$version" != "$declarada" ]; then
+            echo "El tag declara $version y package.json declara $declarada."
+            echo "Un release cuyo tag y artefacto discrepan no es rastreable."
+            exit 1
+          fi
+
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Version $version verificada."
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Verificaciones criticas
+        run: |
+          npm run lint
+          npm run typecheck
+          npm run test
+          npm run metrics:gate
+
+  artifact:
+    name: Publicar el artefacto de la version
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout del codigo
+        uses: actions/checkout@v5
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Construir la aplicacion
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
+        run: npm run build
+
+      # La suma de verificacion permite comprobar que el archivo descargado es el mismo que produjo
+      # el pipeline. Sin ella, el artefacto adjunto es solo un archivo con un nombre de version.
+      - name: Empaquetar y calcular la suma de verificacion
+        id: paquete
+        run: |
+          nombre="appconecta-v${{ needs.verify.outputs.version }}-dist.tar.gz"
+          tar --create --gzip --file "$nombre" --directory dist .
+          sha256sum "$nombre" > "$nombre.sha256"
+
+          echo "nombre=$nombre" >> "$GITHUB_OUTPUT"
+          cat "$nombre.sha256"
+
+      - name: Adjuntar los artefactos al release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "${GITHUB_REF#refs/tags/}" \
+            "${{ steps.paquete.outputs.nombre }}" \
+            "${{ steps.paquete.outputs.nombre }}.sha256" \
+            --clobber
+
+  container:
+    name: Publicar la imagen en GHCR
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    permissions:
+      packages: write
+
+    steps:
+      - name: Checkout del codigo
+        uses: actions/checkout@v5
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # El registro es el propio de GitHub y el token lo emite la plataforma para esta ejecucion.
+      # No hay ningun secreto que configurar, que es lo que hace el pipeline reproducible en un
+      # fork sin intervencion previa.
+      - name: Autenticarse en GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - name: Calcular las etiquetas de la imagen
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,format=long
+          labels: |
+            org.opencontainers.image.version=${{ needs.verify.outputs.version }}
+
+      - name: Construir y publicar
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            BASE_PATH=/
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Registrar la imagen publicada
+        run: |
+          {
+            echo "### Imagen publicada en GHCR"
+            echo ""
+            echo "| Dato | Valor |"
+            echo "| --- | --- |"
+            echo "| Digest | \`${{ steps.build.outputs.digest }}\` |"
+            echo "| Version | \`${{ needs.verify.outputs.version }}\` |"
+            echo ""
+            echo "Etiquetas:"
+            echo ""
+            echo '```'
+            echo "${{ steps.meta.outputs.tags }}"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -87,12 +87,22 @@ Ninguna de las dos admite commits directos ni force-push, y ninguna puede elimin
 
 ### Ramas temporales
 
-| Prefijo     | Propósito                                      | Parte de  | Se integra en          | Ejemplo                |
-| ----------- | ---------------------------------------------- | --------- | ---------------------- | ---------------------- |
-| `feature/*` | Nueva funcionalidad o solicitud del cliente    | `develop` | `develop`              | `feature/virtual-card` |
-| `fix/*`     | Corrección ordinaria, sin urgencia productiva  | `develop` | `develop`              | `fix/date-validation`  |
-| `release/*` | Estabilización y aprobación de una entrega     | `develop` | `main` **y** `develop` | `release/0.1.0`        |
-| `hotfix/*`  | Corrección urgente de un defecto en producción | `main`    | `main` **y** `develop` | `hotfix/0.1.1`         |
+| Prefijo     | Propósito                                            | Parte de  | Se integra en          | Ejemplo                    |
+| ----------- | ---------------------------------------------------- | --------- | ---------------------- | -------------------------- |
+| `feature/*` | Nueva funcionalidad o solicitud del cliente          | `develop` | `develop`              | `feature/virtual-card`     |
+| `fix/*`     | Corrección ordinaria, sin urgencia productiva        | `develop` | `develop`              | `fix/date-validation`      |
+| `release/*` | Estabilización y aprobación de una entrega           | `develop` | `main` **y** `develop` | `release/0.1.0`            |
+| `hotfix/*`  | Corrección urgente de un defecto en producción       | `main`    | `main` **y** `develop` | `hotfix/0.1.1`             |
+| `chore/*`   | Mantenimiento del repositorio, sin tocar el producto | `develop` | `develop`              | `chore/post-release-0.1.0` |
+
+El prefijo `chore/*` se incorporó al cerrar la primera entrega, ante una necesidad que las otras
+cuatro no cubrían: registrar que `BL-PROD-001` quedó establecida, actualizar la trazabilidad con
+los identificadores que por fin existían y devolver la versión de `develop` a un estado de
+desarrollo. Nada de eso es una funcionalidad, ni una corrección, ni una estabilización de entrega.
+Forzarlo dentro de `feature/*` habría hecho que el prefijo dejara de significar algo.
+
+Estas ramas no modifican `src/`. Si un cambio de mantenimiento necesita tocar el producto, deja de
+ser mantenimiento del repositorio y le corresponde `fix/*` o `feature/*`.
 
 La diferencia entre `fix/*` y `hotfix/*` no es la gravedad del defecto sino **de dónde parte la
 corrección**. Un `hotfix/*` nace de `main` porque debe aplicarse sobre lo que el cliente tiene
@@ -115,17 +125,18 @@ interfaz de la aplicación están en español.
 
 ## Ramas planificadas y su estado
 
-| Rama                     | Issue / RFC | Propósito                                       | Estado      |
-| ------------------------ | ----------- | ----------------------------------------------- | ----------- |
-| `feature/scm-bootstrap`  | #1          | Scaffold, herramientas de calidad y CI mínimo   | Integrada   |
-| `feature/app-shell`      | #1          | Shell responsive, navegación, estados y PWA     | Integrada   |
-| `feature/legacy-modules` | #2, #9      | Ocho módulos del portal y deuda TD-001 a TD-009 | Integrada   |
-| `feature/scm-governance` | #3          | Gobierno SCM, ADR y RFC-001                     | En curso    |
-| `feature/ci-pipeline`    | #4          | CI completo, métricas y control de no regresión | Planificada |
-| `release/0.1.0`          | #7          | Primera entrega                                 | Planificada |
-| `feature/virtual-card`   | #5, RFC-001 | Carné virtual QR                                | Planificada |
-| `feature/cd-automation`  | #6          | Despliegue, release por tag y GHCR              | Planificada |
-| `release/0.2.0`          | #8          | Segunda entrega                                 | Planificada |
+| Rama                       | Issue / RFC | Propósito                                        | Estado      |
+| -------------------------- | ----------- | ------------------------------------------------ | ----------- |
+| `feature/scm-bootstrap`    | #1          | Scaffold, herramientas de calidad y CI mínimo    | Integrada   |
+| `feature/app-shell`        | #1          | Shell responsive, navegación, estados y PWA      | Integrada   |
+| `feature/legacy-modules`   | #2, #9      | Ocho módulos del portal y deuda TD-001 a TD-009  | Integrada   |
+| `feature/scm-governance`   | #3          | Gobierno SCM, ADR y RFC-001                      | Integrada   |
+| `feature/ci-pipeline`      | #4          | CI completo, métricas y control de no regresión  | Integrada   |
+| `release/0.1.0`            | #7          | Primera entrega                                  | Integrada   |
+| `chore/post-release-0.1.0` | #7          | Registro de la baseline productiva `BL-PROD-001` | En curso    |
+| `feature/virtual-card`     | #5, RFC-001 | Carné virtual QR                                 | Planificada |
+| `feature/cd-automation`    | #6          | Despliegue, release por tag y GHCR               | Planificada |
+| `release/0.2.0`            | #8          | Segunda entrega                                  | Planificada |
 
 ## Reglas de operación
 

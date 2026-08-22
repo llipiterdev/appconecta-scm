@@ -139,6 +139,28 @@ test('el estado de solicitudes refleja los tramites registrados', async ({ page 
   await expect(main(page).getByRole('listitem').first()).toBeVisible();
 });
 
+// CP-008 de RFC-001
+test('el colaborador llega al carne virtual y visualiza el codigo QR', async ({ page }) => {
+  await page
+    .getByRole('link', { name: /^Carne/ })
+    .first()
+    .click();
+
+  await expect(main(page).getByRole('heading', { name: 'Carne virtual', level: 1 })).toBeVisible();
+  await expect(page).toHaveURL(/\/carne$/);
+
+  const qr = main(page).getByRole('img', { name: /codigo qr del carne/i });
+  await expect(qr).toBeVisible();
+  await expect(qr).toHaveAttribute('src', /^data:image\/svg\+xml/);
+
+  await expect(main(page).getByText('EMP-004821').first()).toBeVisible();
+  await expect(main(page).getByText('Carne activo')).toBeVisible();
+
+  // El criterio de aceptacion 4 de RFC-001 se comprueba tambien sobre la pantalla real: lo que
+  // se codifica es visible y auditable, no una cadena que solo conoce el codigo.
+  await expect(main(page).getByText('APPCONECTA|EMP-004821|ACTIVO')).toBeVisible();
+});
+
 test('una ruta inexistente presenta la pagina de error con salida a inicio', async ({ page }) => {
   await page.goto('/ruta-que-no-existe');
 
