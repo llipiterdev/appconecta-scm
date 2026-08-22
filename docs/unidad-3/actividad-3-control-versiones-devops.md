@@ -156,7 +156,13 @@ El prefijo `chore/*` **no estaba previsto** y se incorporó al cerrar la primera
 apareció trabajo que ninguno de los otros describía: registrar la baseline establecida y completar
 la trazabilidad. La ampliación se documentó en lugar de forzar el trabajo dentro de `feature/*`.
 
-**No se creó ningún `hotfix/*`.** Habría exigido inventar un incidente en producción.
+Se creó **un** `hotfix/*`, y no fue inventado. Al publicar v0.2.0, el workflow de publicación falló
+porque ejecutaba el control de no regresión sin haber generado antes las mediciones que compara: el
+tag y el release quedaron creados, pero sin artefactos ni imagen. El defecto estaba en código ya
+integrado en `main`, que es precisamente la situación que `hotfix/*` existe para atender.
+
+No se simuló ningún incidente adicional para poder ejercitar la rama. Si el defecto no hubiera
+aparecido, la tabla no tendría esta fila.
 
 ## 7. Conventional Commits
 
@@ -204,13 +210,17 @@ de publicar.
 | `BL-DEV-001`  | `v0.1.0-rc.1` | Código candidato a v0.1.0 | Establecida |
 | `BL-PROD-001` | `v0.1.0`      | Primera entrega           | Establecida |
 | `BL-DEV-002`  | `v0.2.0-rc.1` | Código candidato a v0.2.0 | Establecida |
-| `BL-PROD-002` | `v0.2.0`      | Segunda entrega           | En curso    |
+| `BL-PROD-002` | `v0.2.0`      | Segunda entrega           | Establecida |
 
 Una baseline productiva solo se declara establecida cuando **todos** sus artefactos existen: el tag
 anotado, el release, el artefacto con su suma de verificación, la imagen publicada y el despliegue
-verificado. `BL-PROD-002` figura en curso porque este documento se redacta en la rama de entrega,
-antes de que el tag exista; su registro definitivo se completa en
-[`docs/baselines.md`](../baselines.md) cuando los artefactos están publicados.
+verificado.
+
+`BL-PROD-002` es la primera que reúne los seis, y su establecimiento no fue inmediato. La primera
+ejecución del workflow de publicación falló y el release quedó creado sin artefactos, de modo que la
+baseline permaneció declarada como **incompleta** durante ese intervalo. Se completó tras el hotfix
+del PR [#27](https://github.com/llipiterdev/appconecta-scm/pull/27), repitiendo la publicación sobre
+el mismo tag **sin moverlo**. El detalle está en [`docs/baselines.md`](../baselines.md).
 
 ## 10. Integración continua
 
@@ -237,10 +247,19 @@ Los siete son **obligatorios** en los rulesets de `main` y `develop`. El diseño
 | Despliegue en Pages | `push` a `main` | Aplicación desplegada, verificada por smoke test  |
 | Publicación         | Tag `v*.*.*`    | Artefacto con SHA-256 e imagen etiquetada en GHCR |
 
-URL desplegada: <https://llipiterdev.github.io/appconecta-scm/>
+**URL desplegada y verificada:** <https://llipiterdev.github.io/appconecta-scm/>
 
 El smoke test exige código 200 **y** contenido de AppConecta en la respuesta, con reintentos. Un 200
 a secas lo devolvería también una página de error de la plataforma.
+
+Artefactos producidos y comprobados en la entrega v0.2.0:
+
+| Artefacto            | Identificación                                                             |
+| -------------------- | -------------------------------------------------------------------------- |
+| Paquete del build    | `appconecta-v0.2.0-dist.tar.gz`, 612 637 bytes                             |
+| Suma de verificación | `appconecta-v0.2.0-dist.tar.gz.sha256`                                     |
+| Imagen               | `ghcr.io/llipiterdev/appconecta-scm:0.2.0`, también `0.2` y `sha-0595748…` |
+| Digest               | `sha256:c7dd553c6476ce48f7c09d97bd1ed3399373e2202912a6f7fe6d08b7fa449615`  |
 
 ## 12. Automatizaciones implementadas
 
@@ -295,7 +314,10 @@ La condición más relevante que impuso el Comité fue que el cambio no agravara
 cumplió por construcción, implementando el carné en un módulo independiente, y el control de no
 regresión la verificó en cada pull request con tolerancia cero.
 
-**No se simuló ningún cambio de emergencia.** Habría exigido inventar un incidente.
+**No se simuló ningún cambio de emergencia.** El único `hotfix/*` del proyecto respondió a un
+defecto real del pipeline, detectado por el propio pipeline, y se tramitó por el mismo camino que
+cualquier otro cambio: rama, commits, pull request, siete checks y merge commit. Una emergencia no
+justifica saltarse el control; justifica atravesarlo más rápido.
 
 ## 15. Trazabilidad
 
@@ -426,10 +448,15 @@ existe y es navegable.
 no se olvida. La condición que el Comité impuso a RFC-001 —no agravar la deuda reservada— no
 dependió de que alguien la recordara al revisar: la verificó el pipeline en cada pull request.
 
-**Sobre las baselines.** Su utilidad se hizo evidente en un momento concreto. Al aparecer el fallo
-de validación de mensajes en el primer pull request hacia `main`, la salida cómoda era reescribir
-cinco commits con `push --force`. Se descartó porque habría destruido exactamente la propiedad que
-las baselines aportan: que un identificador siga apuntando mañana a lo mismo que hoy.
+**Sobre las baselines.** Su utilidad se hizo evidente en dos momentos concretos, ambos con la misma
+forma. Al fallar la validación de mensajes en el primer pull request hacia `main`, la salida cómoda
+era reescribir cinco commits con `push --force`. Al fallar la publicación de v0.2.0, la salida
+cómoda era borrar el tag y volver a crearlo sobre el commit corregido.
+
+Ambas se descartaron por la misma razón: habrían destruido exactamente la propiedad que las
+baselines aportan, que un identificador siga apuntando mañana a lo mismo que hoy. En los dos casos
+la alternativa costó más trabajo —adaptar la validación, añadir una entrada manual al workflow— y
+en los dos casos ese trabajo es la evidencia de que la baseline significaba algo.
 
 **Sobre la honestidad de la evidencia.** Este trabajo distingue en todo momento entre lo
 configurado, lo ejecutado y lo verificado, y entre lo implementado, lo simulado y lo conceptual. Se
