@@ -80,10 +80,10 @@ cambiarse:
 
 **Contenido:** código candidato a liberación, verificado por el pipeline completo.
 
-| Identificador | Tag           | Origen          | Propósito                                                                     | Estado    |
-| ------------- | ------------- | --------------- | ----------------------------------------------------------------------------- | --------- |
-| `BL-DEV-001`  | `v0.1.0-rc.1` | `release/0.1.0` | Congelar el código candidato antes de la aprobación de la primera entrega     | Pendiente |
-| `BL-DEV-002`  | `v0.2.0-rc.1` | `release/0.2.0` | Congelar el código candidato con el carné virtual antes de la segunda entrega | Pendiente |
+| Identificador | Tag           | Origen          | Propósito                                                                     | Estado      |
+| ------------- | ------------- | --------------- | ----------------------------------------------------------------------------- | ----------- |
+| `BL-DEV-001`  | `v0.1.0-rc.1` | `release/0.1.0` | Congelar el código candidato antes de la aprobación de la primera entrega     | Establecida |
+| `BL-DEV-002`  | `v0.2.0-rc.1` | `release/0.2.0` | Congelar el código candidato con el carné virtual antes de la segunda entrega | Pendiente   |
 
 Estas baselines aportan algo que el commit de la rama de release no aporta por sí solo: un punto
 de recuperación con nombre. Si la validación final de una entrega falla, la corrección parte de un
@@ -152,7 +152,7 @@ la propiedad que justifica la existencia de las baselines.
 | ------------- | ------------------------ | ----------------- | --------------------- | ------------------------- |
 | `BL-FUNC-001` | 21 de agosto de 2026     | `114e7b2`         | Definición de alcance | Commit inicial en `main`  |
 | `BL-DES-001`  | 22 de agosto de 2026     | `a2b8394`         | PR #13 a `develop`    | Merge commit en `develop` |
-| `BL-DEV-001`  | _pendiente_              | `v0.1.0-rc.1`     | Pipeline completo     | _pendiente_               |
+| `BL-DEV-001`  | 22 de agosto de 2026     | `1a5f6cc`         | Pipeline completo     | Tag anotado `v0.1.0-rc.1` |
 | `BL-PROD-001` | _pendiente_              | `v0.1.0`          | PR a `main` + release | _pendiente_               |
 | `BL-DEV-002`  | _pendiente_              | `v0.2.0-rc.1`     | Pipeline completo     | _pendiente_               |
 | `BL-PROD-002` | _pendiente_              | `v0.2.0`          | PR a `main` + release | _pendiente_               |

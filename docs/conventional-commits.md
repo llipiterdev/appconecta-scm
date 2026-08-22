@@ -72,6 +72,8 @@ La validación ocurre en dos momentos independientes:
 1. **Local**, mediante el hook `commit-msg` de Husky. Impide crear el commit incorrecto.
 2. **En CI**, mediante el job de validación de mensajes en cada pull request. Impide que un
    commit incorrecto llegue a una rama permanente aunque los hooks locales estén desactivados.
+   El job distingue commits ordinarios de commits de merge, por la razón que se explica en
+   [Alcance de la validación sobre los commits de merge](#alcance-de-la-validación-sobre-los-commits-de-merge).
 
 El segundo control existe porque el primero puede saltarse con `--no-verify`. Una validación que
 solo vive en la máquina del desarrollador es una recomendación, no un control.
@@ -151,3 +153,28 @@ chore(merge): integrate employee modules and intentional debt (#12)
 El número de pull request entre paréntesis permite localizar, desde el historial de `develop`, la
 discusión y la evaluación de impacto que autorizaron esa integración. Es el enlace entre el
 historial de Git y el proceso de control de cambios.
+
+### Alcance de la validación sobre los commits de merge
+
+De los commits de merge se valida **la cabecera, no el cuerpo**. La distinción no es una excepción
+de conveniencia y conviene explicar de dónde salió.
+
+Los cinco primeros merge commits se integraron con un cuerpo escrito en una sola línea larga, que
+incumple `body-max-line-length`. El incumplimiento no apareció al fusionar hacia `develop`, porque
+allí el rango validado solo contiene los commits de la rama de trabajo; apareció en el primer pull
+request hacia `main`, cuyo rango sí incluye los merges anteriores.
+
+Llegado ese punto quedaban dos salidas. Reescribir los cinco mensajes habría exigido `push --force`
+sobre ramas permanentes ya publicadas, que es precisamente la operación que
+[`docs/git-workflow.md`](git-workflow.md) prohíbe y sobre la que descansa la estabilidad de las
+baselines: un tag o un commit que hoy apunta a un contenido distinto del de ayer destruye la
+trazabilidad que el proyecto pretende demostrar. La otra salida, la adoptada, es acotar la
+validación a lo que quien integra controla de verdad.
+
+La cabecera se sigue exigiendo completa. Es la parte que determina el tipo, el alcance y la
+versión, y es la que se escribe deliberadamente. El cuerpo de un merge lo compone la plataforma en
+el momento de la integración.
+
+El control no se relajó para conseguir un pipeline verde: los commits ordinarios, que son 29 de los
+34 del historial, se siguen validando con el reglamento íntegro. Los merges posteriores a esta
+decisión se redactan ya con el cuerpo ajustado a 100 columnas.
