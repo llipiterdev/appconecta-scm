@@ -1,0 +1,11 @@
+dist/
+coverage/
+reports/
+playwright-report/
+test-results/
+node_modules/
+package-lock.json
+docs/evidencias/logs/
+docs/evidencias/capturas/
+*.min.js
+*.min.css
