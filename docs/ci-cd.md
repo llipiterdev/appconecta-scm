@@ -97,6 +97,7 @@ completas en escritorio. Un flujo que funciona en uno puede estar roto en el otr
 | Una solicitud incompleta comunica el error accesible    | RF-12, RF-14 |
 | El colaborador registra una incapacidad                 | RF-07        |
 | El estado de solicitudes refleja los trámites           | RF-08        |
+| El colaborador visualiza el carné virtual y su QR       | RF-16        |
 | Una ruta inexistente presenta la página de error        | RF-12        |
 
 ## Control de no regresión de métricas
@@ -161,13 +162,25 @@ Reglas de diseño del script:
 
 Build multi-stage con dos etapas y un resultado deliberadamente mínimo:
 
-| Etapa        | Base                | Contenido                           |
-| ------------ | ------------------- | ----------------------------------- |
-| `builder`    | `node:24-alpine`    | Dependencias, código fuente y build |
-| `production` | `nginx:1.29-alpine` | Solo los archivos estáticos y nginx |
+| Etapa        | Base                                      | Contenido                           |
+| ------------ | ----------------------------------------- | ----------------------------------- |
+| `builder`    | `node:24-alpine`                          | Dependencias, código fuente y build |
+| `production` | `nginxinc/nginx-unprivileged:1.29-alpine` | Solo los archivos estáticos y nginx |
 
 La imagen final **no contiene** Node, ni dependencias de npm, ni código fuente. Todo eso vive en la
-etapa que se descarta. El contenedor se ejecuta con el usuario `nginx`, sin privilegios de root.
+etapa que se descarta. El contenedor escucha en el puerto 8080 y se ejecuta como `uid 101`, sin
+privilegios de root.
+
+La variante `nginx-unprivileged` no fue la elección inicial y el cambio salió de un fallo real. Con
+la imagen oficial `nginx:alpine` y la directiva `USER nginx`, el contenedor se construía pero el
+proceso terminaba al arrancar: nginx necesita escribir su PID y sus directorios de caché en rutas
+que solo root puede crear. El job de verificación lo detectó porque no se limita a construir la
+imagen, sino que la ejecuta y la consulta.
+
+El mismo fallo dejó al descubierto una carencia del propio job. Arrancaba el contenedor con
+`docker run --rm`, de modo que al terminar el contenedor desaparecía y `docker logs` no encontraba
+nada que mostrar justo cuando hacía falta. El paso ya no usa `--rm`, publica el estado y el código
+de salida, y comprueba además una ruta profunda para verificar el fallback de la SPA.
 
 La configuración de nginx resuelve tres cuestiones que un servidor estático por defecto haría mal
 para una SPA:
@@ -199,6 +212,82 @@ es el pipeline, que no depende de la configuración de ninguna máquina.
 
 ## Despliegue continuo
 
-Los workflows de despliegue a GitHub Pages y de publicación por tag en GHCR se incorporan en la
-fase de automatización de despliegue. Su diseño está definido en `ADR-0003`; esta sección se
-completará con la configuración real cuando exista, no antes.
+Dos workflows con disparadores distintos, porque responden a preguntas distintas: uno mantiene la
+demostración accesible, el otro produce los artefactos de una entrega formal.
+
+```mermaid
+graph TD
+    M["Merge en main"] --> D1["Validaciones criticas"]
+    D1 --> D2["Build con base path de Pages"]
+    D2 --> D3["Verificar el fallback de rutas"]
+    D3 --> D4["Publicar artefacto"]
+    D4 --> D5["Desplegar en GitHub Pages"]
+    D5 --> D6["Smoke test con reintentos"]
+
+    T["Tag vX.Y.Z"] --> R1["Validar SemVer y package.json"]
+    R1 --> R2["Verificaciones criticas y gate"]
+    R2 --> R3["Artefacto con suma SHA-256"]
+    R2 --> R4["Imagen etiquetada en GHCR"]
+```
+
+### Despliegue en GitHub Pages
+
+| Aspecto      | Configuración                                                                                 |
+| ------------ | --------------------------------------------------------------------------------------------- |
+| Disparador   | `push` a `main` y ejecución manual                                                            |
+| Entorno      | `github-pages`, con la URL registrada en la propia ejecución                                  |
+| Permisos     | `contents: read` por defecto; `pages: write` e `id-token: write` solo en el job de despliegue |
+| Concurrencia | Grupo `pages`, **sin** cancelación en curso                                                   |
+| URL          | <https://llipiterdev.github.io/appconecta-scm/>                                               |
+
+Cuatro decisiones merecen explicación.
+
+**Se revalida antes de desplegar**, aunque el pull request ya haya pasado por CI. El artefacto que
+llega al usuario debe construirse desde un árbol verificado, no desde la confianza en que alguien
+lo verificó antes.
+
+**Los despliegues no se cancelan entre sí.** A diferencia de una validación, cancelar un despliegue
+en curso puede dejar el entorno a medias, y quien lo esté viendo verá el resultado intermedio.
+
+**El base path se inyecta en construcción.** Pages sirve el proyecto desde un subdirectorio y Vite
+incrusta esa ruta en los assets generados: no es algo que el servidor pueda corregir después.
+
+**El fallback de rutas se verifica, no se genera.** `public/404.html` redirige la ruta solicitada al
+índice conservándola como parámetro, y `src/app/spaRedirect.ts` la restaura al arrancar. El
+workflow comprueba que ese archivo viaja en el artefacto; sustituirlo por una copia de `index.html`
+rompería la cadena y un enlace directo a una sección aterrizaría en el inicio.
+
+### Smoke test del despliegue
+
+Un despliegue que reporta éxito no demuestra que la aplicación responda. El smoke test consulta la
+URL publicada y exige dos condiciones: código 200 **y** contenido de AppConecta en la respuesta. Un
+200 por sí solo lo devolvería también una página de error de la plataforma.
+
+Reintenta hasta diez veces con quince segundos de espera, porque la propagación en Pages no es
+inmediata y fallar al primer intento reportaría una condición transitoria como un defecto.
+
+### Publicación de versión por tag
+
+Se dispara con cualquier tag `v*.*.*` y encadena tres jobs, con el de verificación como puerta.
+
+| Job         | Responsabilidad                                                        |
+| ----------- | ---------------------------------------------------------------------- |
+| `verify`    | Formato SemVer, coincidencia con `package.json`, verificaciones y gate |
+| `artifact`  | Empaquetado del build con su suma SHA-256, adjuntado al release        |
+| `container` | Imagen etiquetada por versión, por `major.minor` y por commit, en GHCR |
+
+La comprobación de que el tag coincide con `package.json` va **antes que nada**. Un release cuyo
+tag dice una versión y cuyo artefacto dice otra es imposible de rastrear, y es el error más fácil
+de cometer al liberar y el más caro de descubrir después.
+
+Los artefactos se publican con su suma de verificación. Sin ella, el archivo adjunto es solo un
+archivo con un nombre de versión: nada permite comprobar que lo descargado es lo que produjo el
+pipeline.
+
+### Ausencia de secretos externos
+
+Ninguno de los dos workflows requiere configurar un secreto. La autenticación contra GHCR usa el
+`GITHUB_TOKEN` que la plataforma emite para cada ejecución, y el despliegue en Pages usa OIDC
+mediante `id-token: write`. Cualquier integrante puede hacer fork del repositorio y obtener el
+mismo comportamiento sin intervención previa, que es la condición que hace reproducible la
+evidencia.
