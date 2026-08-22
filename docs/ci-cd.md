@@ -295,6 +295,23 @@ Los artefactos se publican con su suma de verificación. Sin ella, el archivo ad
 archivo con un nombre de versión: nada permite comprobar que lo descargado es lo que produjo el
 pipeline.
 
+### Repetición de una publicación
+
+El workflow admite además ejecución manual con el tag como parámetro. La razón salió de un segundo
+fallo real: en la publicación de v0.2.0, el job de verificación ejecutaba el control de no regresión
+**sin haber generado antes las mediciones**, de modo que el script no encontraba el resumen de
+cobertura y fallaba. El tag ya estaba publicado y el release creado, pero sin artefactos.
+
+La salida cómoda habría sido mover el tag para volver a disparar el workflow. Se descartó: un tag
+que se mueve deja de identificar una baseline, que es justamente lo único que un tag aporta. La
+entrada manual permite repetir la publicación sobre el tag existente, y los tres jobs extraen el
+árbol del tag en lugar del de la rama, porque verificar una versión contra un código que no es el
+suyo no verifica nada.
+
+Ese es también el motivo de que las etiquetas de la imagen se deriven de la versión verificada y no
+del ref del evento: en una ejecución manual el ref es la rama, y dejar que la acción lo dedujera
+produciría una imagen etiquetada `main`.
+
 ### Ausencia de secretos externos
 
 Ninguno de los dos workflows requiere configurar un secreto. La autenticación contra GHCR usa el
