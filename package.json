@@ -20,9 +20,15 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "metrics:complexity": "node scripts/metrics-complexity.mjs",
     "metrics:duplication": "jscpd",
     "metrics:audit": "npm audit --audit-level=high",
+    "metrics:audit:json": "npm audit --json > reports/audit.json",
+    "metrics": "npm run metrics:complexity && npm run metrics:duplication && npm run metrics:audit",
+    "metrics:gate": "node scripts/metrics-gate.mjs",
+    "evidence": "node scripts/collect-evidence.mjs",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -48,6 +54,7 @@
     "@commitlint/cli": "^21.2.2",
     "@commitlint/config-conventional": "^21.2.2",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/vite": "^4.3.3",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
