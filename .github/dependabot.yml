@@ -1,0 +1,35 @@
+version: 2
+
+updates:
+  # Dependencias de la aplicacion. La actualizacion de dependencias es mantenimiento
+  # preventivo automatizado: anticipa la obsolescencia identificada en el diagnostico
+  # de la Actividad 1.
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    target-branch: develop
+    labels:
+      - configuration-change
+    commit-message:
+      prefix: 'build(deps)'
+      prefix-development: 'build(deps-dev)'
+    groups:
+      development-tooling:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+
+  # Acciones de GitHub utilizadas por los pipelines.
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: monthly
+    target-branch: develop
+    labels:
+      - ci-cd
+    commit-message:
+      prefix: 'ci(deps)'

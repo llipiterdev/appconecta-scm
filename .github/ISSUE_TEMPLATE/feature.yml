@@ -1,0 +1,43 @@
+name: Funcionalidad
+description: Proponer una nueva funcionalidad de la simulacion AppConecta
+labels: ['feature']
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto
+      description: Necesidad que origina la funcionalidad y su relacion con el diagnostico previo.
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Alcance
+      description: Que se incluye y que queda explicitamente fuera.
+    validations:
+      required: true
+
+  - type: input
+    id: configuration-items
+    attributes:
+      label: Configuration Items afectados
+      description: Identificadores segun docs/configuration-items.md (por ejemplo CI-APP-CODE-001).
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Criterios de aceptacion
+      description: Condiciones verificables de cierre, incluidas las pruebas requeridas.
+    validations:
+      required: true
+
+  - type: input
+    id: branch
+    attributes:
+      label: Rama prevista
+      placeholder: feature/nombre-descriptivo
+    validations:
+      required: true
