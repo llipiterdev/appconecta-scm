@@ -1,0 +1,72 @@
+name: RFC (solicitud formal de cambio)
+description: Registrar una solicitud de cambio sobre un Configuration Item bajo baseline
+labels: ['rfc', 'configuration-change']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Todo cambio sobre un CI bajo baseline se tramita mediante el proceso de siete pasos
+        documentado en `docs/change-control.md`. El documento formal del RFC vive en
+        `docs/rfc/`.
+
+  - type: input
+    id: identifier
+    attributes:
+      label: Identificador del RFC
+      placeholder: RFC-002
+    validations:
+      required: true
+
+  - type: input
+    id: requester
+    attributes:
+      label: Solicitante
+      description: Rol organizacional que solicita el cambio.
+    validations:
+      required: true
+
+  - type: textarea
+    id: justification
+    attributes:
+      label: Justificacion
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Alcance
+    validations:
+      required: true
+
+  - type: input
+    id: configuration-items
+    attributes:
+      label: Configuration Items afectados
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Evaluacion de impacto y riesgos
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Criterios de aceptacion y casos de prueba
+    validations:
+      required: true
+
+  - type: dropdown
+    id: level
+    attributes:
+      label: Nivel del cambio
+      options:
+        - Cambio menor
+        - Cambio estandar
+        - Cambio de emergencia
+    validations:
+      required: true

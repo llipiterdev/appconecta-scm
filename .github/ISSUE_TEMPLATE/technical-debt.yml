@@ -1,0 +1,65 @@
+name: Deuda tecnica
+description: Registrar deuda tecnica identificada o introducida de forma deliberada
+labels: ['technical-debt']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Toda deuda tecnica debe quedar registrada y cuantificada. Una deuda deliberada es
+        legitima; el problema es la deuda que nadie registra ni mide.
+
+        El registro completo con los 17 atributos vive en `docs/technical-debt-register.md`.
+
+  - type: input
+    id: identifier
+    attributes:
+      label: Identificador
+      placeholder: TD-010
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Categoria
+      options:
+        - Codigo
+        - Arquitectura
+        - Dependencias
+        - Pruebas
+        - Documentacion
+        - Seguridad
+    validations:
+      required: true
+
+  - type: input
+    id: component
+    attributes:
+      label: Componente afectado
+      placeholder: src/services/legacyEmployeeService.ts
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidencia
+      description: Evidencia concreta y medida, no una impresion general.
+    validations:
+      required: true
+
+  - type: input
+    id: metric
+    attributes:
+      label: Metrica e indicador
+      description: Indicador cuantificable y su valor medido actual.
+    validations:
+      required: true
+
+  - type: textarea
+    id: strategy
+    attributes:
+      label: Estrategia prevista y criterio de cierre
+      description: Mantener, refactorizar, modernizar o reemplazar, y como se verificara el cierre.
+    validations:
+      required: true
