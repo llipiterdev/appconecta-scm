@@ -1,0 +1,35 @@
+{
+  "description": "Baseline de metricas medida sobre la version v0.1.0. Los valores no son objetivos: son el estado real contra el que se compara para evitar que las metricas empeoren en silencio.",
+  "measuredAt": "2026-08-22",
+  "measuredOn": "feature/ci-pipeline",
+  "version": "0.1.0",
+  "coverage": {
+    "statements": 89.19,
+    "branches": 75,
+    "functions": 91.81,
+    "lines": 89.08,
+    "tolerancePoints": 1,
+    "rationale": "La tolerancia de un punto absorbe el efecto de anadir codigo nuevo cubierto de forma desigual, sin permitir que la cobertura se degrade de forma apreciable."
+  },
+  "complexity": {
+    "maxComplexity": 26,
+    "maxComplexityFunction": "processSubmission",
+    "maxComplexityFile": "src/services/legacyEmployeeService.ts",
+    "largestFileLines": 580,
+    "tolerance": 0,
+    "rationale": "TD-005 esta reservada para la Actividad 4. La deuda puede permanecer, pero no crecer: cualquier aumento de la complejidad maxima invalidaria la comparacion antes/despues."
+  },
+  "duplication": {
+    "percentage": 0.77,
+    "clones": 2,
+    "duplicatedLines": 20,
+    "tolerancePoints": 0.5,
+    "rationale": "TD-003 esta registrada y reservada. La tolerancia permite refactorizaciones que muevan codigo sin abrir la puerta a duplicacion nueva."
+  },
+  "vulnerabilities": {
+    "critical": 0,
+    "high": 0,
+    "tolerance": 0,
+    "rationale": "Ninguna deuda del proyecto justifica una vulnerabilidad. El umbral es cero y no admite tolerancia."
+  }
+}
