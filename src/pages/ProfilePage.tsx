@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { AsyncSection } from '@/components/feedback/AsyncSection';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DefinitionEntry } from '@/components/ui/definitionEntry';
 import { useAsyncResource } from '@/hooks/useAsyncResource';
 import { getEmployeeProfile } from '@/services/legacyEmployeeService';
 
@@ -32,30 +33,21 @@ export function ProfilePage() {
             </CardHeader>
             <CardContent>
               <dl className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
-                <ProfileEntry label="Documento de identidad" value={profile.documentNumber} />
-                <ProfileEntry label="Cargo" value={profile.position} />
-                <ProfileEntry label="Area" value={profile.department} />
-                <ProfileEntry label="Centro de costo" value={profile.costCenter} />
-                <ProfileEntry label="Sede" value={profile.location} />
-                <ProfileEntry label="Fecha de ingreso" value={profile.hireDate} />
-                <ProfileEntry label="Tipo de contrato" value={profile.contractType} />
-                <ProfileEntry label="Jefe inmediato" value={profile.supervisor} />
-                <ProfileEntry label="Correo corporativo" value={profile.email} />
-                <ProfileEntry label="Telefono movil" value={profile.phone} />
+                <DefinitionEntry label="Documento de identidad" value={profile.documentNumber} />
+                <DefinitionEntry label="Cargo" value={profile.position} />
+                <DefinitionEntry label="Area" value={profile.department} />
+                <DefinitionEntry label="Centro de costo" value={profile.costCenter} />
+                <DefinitionEntry label="Sede" value={profile.location} />
+                <DefinitionEntry label="Fecha de ingreso" value={profile.hireDate} />
+                <DefinitionEntry label="Tipo de contrato" value={profile.contractType} />
+                <DefinitionEntry label="Jefe inmediato" value={profile.supervisor} />
+                <DefinitionEntry label="Correo corporativo" value={profile.email} />
+                <DefinitionEntry label="Telefono movil" value={profile.phone} />
               </dl>
             </CardContent>
           </Card>
         )}
       </AsyncSection>
     </>
-  );
-}
-
-function ProfileEntry({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="min-w-0">
-      <dt className="text-xs font-medium tracking-wide text-slate-500 uppercase">{label}</dt>
-      <dd className="mt-0.5 text-sm break-words text-slate-900">{value}</dd>
-    </div>
   );
 }

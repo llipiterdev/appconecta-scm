@@ -14,6 +14,23 @@ export type EmployeeProfile = {
   cardStatus: 'active' | 'inactive';
 };
 
+export type VirtualCardStatus = 'active' | 'inactive';
+
+export type VirtualCard = {
+  employeeCode: string;
+  fullName: string;
+  position: string;
+  department: string;
+  hireDate: string;
+  status: VirtualCardStatus;
+  statusLabel: string;
+  /**
+   * Contenido codificado en el QR. Solo codigo de empleado y estado: un QR es legible por
+   * cualquiera con una camara, de modo que su contenido es publico por construccion.
+   */
+  qrPayload: string;
+};
+
 export type LaborDocument = {
   id: string;
   title: string;

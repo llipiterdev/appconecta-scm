@@ -7,7 +7,7 @@
 | **Solicitante**        | Miguel Santiago Acevedo Virgues — Representante del cliente / RRHH |
 | **Fecha de solicitud** | 21 de agosto de 2026                                               |
 | **Nivel de cambio**    | Cambio mayor                                                       |
-| **Estado**             | **Aprobado — pendiente de implementación**                         |
+| **Estado**             | **Implementado — pendiente de liberación en v0.2.0**               |
 | **Issue asociada**     | [#5](https://github.com/llipiterdev/appconecta-scm/issues/5)       |
 | **Versión objetivo**   | v0.2.0                                                             |
 | **Rama de trabajo**    | `feature/virtual-card`                                             |
@@ -124,16 +124,43 @@ decisión de diseño que se está demostrando es la misma.
 
 ## 8. Casos de prueba
 
-| ID     | Nivel      | Caso                                                                        | Criterio verificado |
-| ------ | ---------- | --------------------------------------------------------------------------- | ------------------- |
-| CP-001 | Unitario   | La lectura de los datos del carné devuelve los campos esperados             | 2                   |
-| CP-002 | Unitario   | El contenido del QR contiene únicamente código de empleado y estado         | 4                   |
-| CP-003 | Unitario   | Un colaborador con vinculación inactiva produce un carné en estado inactivo | 5                   |
-| CP-004 | Componente | La página muestra los cinco campos de acreditación                          | 2                   |
-| CP-005 | Componente | El QR se renderiza con texto alternativo                                    | 3, 6                |
-| CP-006 | Componente | El estado se comunica mediante texto además del color                       | 5                   |
-| CP-007 | Componente | Se presentan los estados de carga y error                                   | —                   |
-| CP-008 | End-to-end | El colaborador navega hasta el carné y visualiza el QR                      | 1, 3                |
+| ID     | Nivel      | Caso                                                                        | Criterio verificado | Ubicación                                 | Resultado |
+| ------ | ---------- | --------------------------------------------------------------------------- | ------------------- | ----------------------------------------- | --------- |
+| CP-001 | Unitario   | La lectura de los datos del carné devuelve los campos esperados             | 2                   | `src/services/virtualCardService.test.ts` | Pasa      |
+| CP-002 | Unitario   | El contenido del QR contiene únicamente código de empleado y estado         | 4                   | `src/services/virtualCardService.test.ts` | Pasa      |
+| CP-003 | Unitario   | Un colaborador con vinculación inactiva produce un carné en estado inactivo | 5                   | `src/services/virtualCardService.test.ts` | Pasa      |
+| CP-004 | Componente | La página muestra los cinco campos de acreditación                          | 2                   | `src/pages/VirtualCardPage.test.tsx`      | Pasa      |
+| CP-005 | Componente | El QR se renderiza con texto alternativo                                    | 3, 6                | `src/pages/VirtualCardPage.test.tsx`      | Pasa      |
+| CP-006 | Componente | El estado se comunica mediante texto además del color                       | 5                   | `src/pages/VirtualCardPage.test.tsx`      | Pasa      |
+| CP-007 | Componente | Se presentan los estados de carga y error                                   | —                   | `src/pages/VirtualCardPage.test.tsx`      | Pasa      |
+| CP-008 | End-to-end | El colaborador navega hasta el carné y visualiza el QR                      | 1, 3                | `e2e/critical-journeys.spec.ts`           | Pasa      |
+
+Los ocho casos suman doce pruebas: varios criterios se verifican con más de una aserción
+independiente. CP-002 se desdobla en tres, porque comprobar que un QR no filtra datos personales
+mediante un solo ejemplo no descarta que otro campo se cuele por otra vía.
+
+## 8.b Verificación de los criterios de aceptación
+
+| Criterio | Enunciado                                     | Resultado medido                                                |
+| -------- | --------------------------------------------- | --------------------------------------------------------------- |
+| 1        | Sección accesible desde la navegación         | Cumplido, verificado en móvil y escritorio por CP-008           |
+| 2        | Cinco campos de acreditación                  | Cumplido, CP-001 y CP-004                                       |
+| 3        | El QR se genera y se renderiza                | Cumplido, CP-005 y CP-008                                       |
+| 4        | El QR no incluye datos personales             | Cumplido, CP-002 verifica la ausencia de seis campos sensibles  |
+| 5        | El estado se distingue por texto              | Cumplido, CP-003 y CP-006                                       |
+| 6        | Texto alternativo y equivalente textual       | Cumplido, CP-005; la página muestra además el contenido literal |
+| 7        | La cobertura no desciende                     | Cumplido: 89,19 % → **90,02 %** de sentencias                   |
+| 8        | La complejidad del servicio legacy no aumenta | Cumplido: **26**, sin variación                                 |
+| 9        | `npm audit --audit-level=high` sin hallazgos  | Cumplido: 0 vulnerabilidades con `qrcode` 1.5.4 incorporado     |
+| 10       | Todos los checks de CI pasan                  | Verificado en el pull request de la implementación              |
+
+La duplicación merece una nota, porque el proceso funcionó exactamente como debía. La primera
+versión de la página repetía el componente de par etiqueta/valor que ya existía en el perfil, y la
+medición lo detectó: la duplicación subió de 0,77 % a 0,96 %. Estaba dentro de la tolerancia
+documentada, de modo que el control no habría bloqueado la integración. Se corrigió igualmente
+extrayendo un componente compartido, y la métrica quedó en **0,71 %**, por debajo de la baseline.
+Una tolerancia existe para absorber el ruido de refactorizaciones legítimas, no para autorizar
+deuda nueva que nadie registró.
 
 ## 9. Trazabilidad de la implementación
 
