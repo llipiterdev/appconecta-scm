@@ -91,7 +91,7 @@ jobs:
 
       - name: Publicar reporte de cobertura
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-${{ github.sha }}
           path: coverage/
@@ -135,7 +135,7 @@ jobs:
         run: npm run build
 
       - name: Publicar artefacto de distribucion
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dist-${{ github.sha }}
           path: dist/
@@ -182,7 +182,7 @@ jobs:
 
       - name: Publicar reporte de Playwright
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-${{ github.sha }}
           path: |
@@ -231,7 +231,7 @@ jobs:
 
       - name: Publicar reportes de metricas
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: metrics-${{ github.sha }}
           path: reports/
