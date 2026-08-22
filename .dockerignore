@@ -1,0 +1,15 @@
+node_modules
+dist
+coverage
+reports
+test-results
+.git
+.github
+.husky
+docs
+e2e
+.commit-msgs
+*.log
+.env
+.env.*
+!.env.example

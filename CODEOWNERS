@@ -1,0 +1,15 @@
+# Propietarios por defecto de todos los Configuration Items del repositorio.
+#
+# Nota de transparencia: la ejecucion tecnica en GitHub esta centralizada en una
+# sola identidad para garantizar automatizacion y reproducibilidad. Los roles
+# organizacionales de la consultora se documentan en docs/raci.md.
+
+*                       @llipiterdev
+
+# Gobierno de configuracion y documentacion academica
+/docs/                  @llipiterdev
+
+# Automatizacion: pipelines y despliegue
+/.github/workflows/     @llipiterdev
+/Dockerfile             @llipiterdev
+/scripts/               @llipiterdev

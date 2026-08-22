@@ -1,0 +1,44 @@
+name: Defecto
+description: Reportar un defecto observado en la simulacion AppConecta
+labels: ['fix']
+body:
+  - type: textarea
+    id: observed
+    attributes:
+      label: Comportamiento observado
+      description: Que ocurre realmente. Describa solo hechos verificados.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamiento esperado
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pasos para reproducir
+    validations:
+      required: true
+
+  - type: input
+    id: configuration-items
+    attributes:
+      label: Configuration Items afectados
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Nivel del cambio
+      description: Segun docs/change-control.md
+      options:
+        - Cambio menor
+        - Cambio estandar
+        - Cambio de emergencia
+    validations:
+      required: true
