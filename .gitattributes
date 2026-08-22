@@ -1,0 +1,21 @@
+# Normalizacion de fin de linea: LF en el repositorio
+* text=auto eol=lf
+
+# Archivos que deben conservar CRLF en Windows
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binarios
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.pdf binary
+
+# Lockfile: no mostrar diff completo en revisiones
+package-lock.json -diff linguist-generated=true
