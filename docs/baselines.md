@@ -23,7 +23,7 @@ podrían necesitar recuperarse.
 ```mermaid
 graph LR
     BF["Baseline funcional<br/>Requisitos y alcance<br/>commit 114e7b2"]
-    BD["Baseline de diseño<br/>Arquitectura y decisiones<br/>commit — fase D"]
+    BD["Baseline de diseño<br/>Arquitectura y decisiones<br/>commit a2b8394"]
     BDev1["Baseline de desarrollo<br/>v0.1.0-rc.1"]
     BP1["Baseline productiva<br/>v0.1.0"]
     BDev2["Baseline de desarrollo<br/>v0.2.0-rc.1"]
@@ -62,11 +62,11 @@ la convención. Se conserva sin reescribir y se registra como excepción histór
 | Atributo                   | Valor                                                                                           |
 | -------------------------- | ----------------------------------------------------------------------------------------------- |
 | Identificador              | `BL-DES-001`                                                                                    |
-| Commit                     | _(se registra al integrar la fase de gobierno SCM)_                                             |
+| Commit                     | `a2b8394` — `chore(merge): integrate scm governance and design baseline (#13)`                  |
 | Rama de origen             | `feature/scm-governance` → `develop`                                                            |
 | Artefactos que la componen | `docs/architecture.md`, `docs/adr/0001` a `0003`, `docs/configuration-items.md`, este documento |
-| Método de aprobación       | Pull request hacia `develop` con checks de CI en verde                                          |
-| Estado                     | **En establecimiento**                                                                          |
+| Método de aprobación       | Pull request #13 con los cuatro checks de CI en verde                                           |
+| Estado                     | **Establecida**                                                                                 |
 
 Las tres decisiones que esta baseline congela, y que por tanto requieren un ADR nuevo para
 cambiarse:
@@ -148,14 +148,14 @@ la propiedad que justifica la existencia de las baselines.
 
 ## Registro de establecimiento
 
-| Baseline      | Fecha de establecimiento | Identificador Git | Aprobación            | Evidencia                |
-| ------------- | ------------------------ | ----------------- | --------------------- | ------------------------ |
-| `BL-FUNC-001` | 21 de agosto de 2026     | `114e7b2`         | Definición de alcance | Commit inicial en `main` |
-| `BL-DES-001`  | _pendiente_              | _pendiente_       | PR a `develop`        | _pendiente_              |
-| `BL-DEV-001`  | _pendiente_              | `v0.1.0-rc.1`     | Pipeline completo     | _pendiente_              |
-| `BL-PROD-001` | _pendiente_              | `v0.1.0`          | PR a `main` + release | _pendiente_              |
-| `BL-DEV-002`  | _pendiente_              | `v0.2.0-rc.1`     | Pipeline completo     | _pendiente_              |
-| `BL-PROD-002` | _pendiente_              | `v0.2.0`          | PR a `main` + release | _pendiente_              |
+| Baseline      | Fecha de establecimiento | Identificador Git | Aprobación            | Evidencia                 |
+| ------------- | ------------------------ | ----------------- | --------------------- | ------------------------- |
+| `BL-FUNC-001` | 21 de agosto de 2026     | `114e7b2`         | Definición de alcance | Commit inicial en `main`  |
+| `BL-DES-001`  | 22 de agosto de 2026     | `a2b8394`         | PR #13 a `develop`    | Merge commit en `develop` |
+| `BL-DEV-001`  | _pendiente_              | `v0.1.0-rc.1`     | Pipeline completo     | _pendiente_               |
+| `BL-PROD-001` | _pendiente_              | `v0.1.0`          | PR a `main` + release | _pendiente_               |
+| `BL-DEV-002`  | _pendiente_              | `v0.2.0-rc.1`     | Pipeline completo     | _pendiente_               |
+| `BL-PROD-002` | _pendiente_              | `v0.2.0`          | PR a `main` + release | _pendiente_               |
 
 Las filas pendientes se completan **cuando el identificador existe**, no antes. Anticipar un SHA
 o una fecha sería fabricar evidencia.

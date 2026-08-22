@@ -48,18 +48,37 @@ Las funcionalidades RF-02 y RF-03 se verifican únicamente a través de las prue
 Esa cobertura parcial no es un descuido sino la materialización deliberada de **TD-006**, y por
 eso figura declarada aquí en lugar de presentarse como cobertura completa.
 
+### Verificación end-to-end adicional
+
+Diez de los requisitos anteriores cuentan además con verificación end-to-end en
+`e2e/critical-journeys.spec.ts`, ejecutada contra el build de producción en dos dispositivos
+(móvil y escritorio):
+
+| Requisito                     | Flujo end-to-end                                        |
+| ----------------------------- | ------------------------------------------------------- |
+| RF-01                         | El dashboard carga el resumen del colaborador           |
+| RF-04                         | La consulta de documentos permite filtrar por categoría |
+| RF-05                         | La consulta de nómina muestra los importes              |
+| RF-06                         | El colaborador registra una solicitud de RRHH           |
+| RF-07                         | El colaborador registra una incapacidad médica          |
+| RF-08                         | El estado de solicitudes refleja los trámites           |
+| RF-09, RF-15                  | La navegación conduce a la sección seleccionada         |
+| RF-12, RF-14                  | Una solicitud incompleta comunica el error accesible    |
+| RF-12                         | Una ruta inexistente presenta la página de error        |
+| Alcance simulado (`ADR-0001`) | El aviso de simulación académica es visible             |
+
 ## 2. Requisitos de la Actividad 3
 
-| Requisito de la actividad               | Implementación                                         | Evidencia verificable                            | Estado   |
-| --------------------------------------- | ------------------------------------------------------ | ------------------------------------------------ | -------- |
-| Crear repositorio Git                   | `llipiterdev/appconecta-scm`, público                  | URL del repositorio                              | Cumplido |
-| Definir estrategia de branching         | GitFlow liviano                                        | `docs/git-workflow.md`, `ADR-0002`, ramas reales | Cumplido |
-| Aplicar versionamiento semántico        | Política SemVer con tags anotados                      | `docs/versioning.md`                             | En curso |
-| Buenas prácticas de commits             | Conventional Commits, verificados local y en CI        | `docs/conventional-commits.md`, historial        | Cumplido |
-| Pipeline CI/CD con build, test y deploy | GitHub Actions, Pages y GHCR                           | `.github/workflows/`                             | En curso |
-| Automatizar procesos clave              | Validación, métricas, release, despliegue y evidencias | Workflows y scripts                              | En curso |
-| Documentar la implementación            | Conjunto documental de `docs/`                         | Este directorio                                  | En curso |
-| Modelo de gestión de configuración      | CI, baselines, control de cambios y trazabilidad       | `docs/configuration-items.md` y siguientes       | Cumplido |
+| Requisito de la actividad               | Implementación                                   | Evidencia verificable                            | Estado                   |
+| --------------------------------------- | ------------------------------------------------ | ------------------------------------------------ | ------------------------ |
+| Crear repositorio Git                   | `llipiterdev/appconecta-scm`, público            | URL del repositorio                              | Cumplido                 |
+| Definir estrategia de branching         | GitFlow liviano                                  | `docs/git-workflow.md`, `ADR-0002`, ramas reales | Cumplido                 |
+| Aplicar versionamiento semántico        | Política SemVer con tags anotados                | `docs/versioning.md`                             | En curso                 |
+| Buenas prácticas de commits             | Conventional Commits, verificados local y en CI  | `docs/conventional-commits.md`, historial        | Cumplido                 |
+| Pipeline CI/CD con build, test y deploy | GitHub Actions, Pages y GHCR                     | `.github/workflows/ci.yml`, 7 jobs               | CI cumplido; CD en curso |
+| Automatizar procesos clave              | Validación, métricas, no regresión y evidencias  | Workflows y `scripts/`                           | En curso                 |
+| Documentar la implementación            | Conjunto documental de `docs/`                   | Este directorio                                  | En curso                 |
+| Modelo de gestión de configuración      | CI, baselines, control de cambios y trazabilidad | `docs/configuration-items.md` y siguientes       | Cumplido                 |
 
 ## 3. Trazabilidad de las integraciones realizadas
 

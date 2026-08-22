@@ -101,7 +101,7 @@ efecto de una actualización de dependencias.
 | CI-TST-COMP-001  | Pruebas de componentes y páginas      | Pruebas   | Revisión    | Implementado | v0.1.0  | `src/pages/*.test.tsx`, `src/components/**/*.test.tsx` | CI-APP-PAGE-001                 | Alta       | PR + CI    |
 | CI-TST-ROUTE-001 | Pruebas de enrutamiento y shell       | Pruebas   | Revisión    | Implementado | v0.1.0  | `src/app/routes.test.tsx`                              | CI-APP-UI-002                   | Media      | PR + CI    |
 | CI-TST-UTIL-001  | Utilidades de prueba                  | Pruebas   | Revisión    | Implementado | v0.1.0  | `src/test/`                                            | CI-CFG-TEST-001                 | Media      | PR + CI    |
-| CI-TST-E2E-001   | Pruebas end-to-end de flujos críticos | Pruebas   | Revisión    | Pendiente    | v0.1.0  | `e2e/`                                                 | CI-APP-PAGE-001                 | Alta       | PR + CI    |
+| CI-TST-E2E-001   | Pruebas end-to-end de flujos críticos | Pruebas   | Revisión    | Implementado | v0.1.0  | `e2e/`, `playwright.config.ts`                         | CI-APP-PAGE-001                 | Alta       | PR + CI    |
 
 ## 4. Automatización CI/CD
 
@@ -110,9 +110,10 @@ efecto de una actualización de dependencias.
 | CI-PIPE-CI-001     | Pipeline de integración continua     | Automatización              | DevOps          | Implementado | v0.1.0  | `.github/workflows/ci.yml`                                    | CI-CFG-DEP-001, CI-TST-*       | **Crítica** | PR + CI                          |
 | CI-PIPE-CD-001     | Pipeline de despliegue a Pages       | Automatización              | DevOps          | Pendiente    | v0.2.0  | `.github/workflows/deploy.yml`                                | CI-PIPE-CI-001                 | Alta        | PR + CI                          |
 | CI-PIPE-REL-001    | Pipeline de release por tag          | Automatización              | DevOps          | Pendiente    | v0.2.0  | `.github/workflows/release.yml`                               | CI-PIPE-CI-001, CI-REL-IMG-001 | Alta        | PR + CI                          |
-| CI-PIPE-DOCKER-001 | Definición de imagen de producción   | Automatización              | DevOps          | Pendiente    | v0.1.0  | `Dockerfile`, `.dockerignore`                                 | CI-CFG-VITE-001                | Alta        | PR + CI                          |
+| CI-PIPE-DOCKER-001 | Definición de imagen de producción   | Automatización              | DevOps          | Implementado | v0.1.0  | `Dockerfile`, `.dockerignore`, `docker/nginx.conf`            | CI-CFG-VITE-001                | Alta        | PR + CI                          |
 | CI-PIPE-METRIC-001 | Scripts de medición de métricas      | Automatización              | Responsable SCM | Implementado | v0.1.0  | `scripts/metrics-complexity.mjs`                              | CI-CFG-LINT-002                | Media       | PR + CI                          |
-| CI-PIPE-EVID-001   | Script de recopilación de evidencias | Automatización              | Responsable SCM | Pendiente    | v0.2.0  | `scripts/collect-evidence.mjs`                                | CI-PIPE-CI-001                 | Media       | PR + CI                          |
+| CI-PIPE-EVID-001   | Script de recopilación de evidencias | Automatización              | Responsable SCM | Implementado | v0.1.0  | `scripts/collect-evidence.mjs`                                | CI-PIPE-CI-001                 | Media       | PR + CI                          |
+| CI-PIPE-GATE-001   | Control de no regresión de métricas  | Automatización              | Responsable SCM | Implementado | v0.1.0  | `scripts/metrics-gate.mjs`, `metrics-baseline.json`           | CI-PIPE-METRIC-001             | **Crítica** | PR + CI                          |
 | CI-PIPE-DEP-001    | Configuración de Dependabot          | Automatización              | DevOps          | Implementado | v0.1.0  | `.github/dependabot.yml`                                      | CI-CFG-DEP-001                 | Baja        | PR + CI                          |
 | CI-PIPE-RULE-001   | Rulesets de protección de ramas      | Configuración de plataforma | Responsable SCM | Implementado | v0.1.0  | Rulesets 21182905 y 21182906                                  | CI-PIPE-CI-001                 | **Crítica** | Cambio administrativo registrado |
 | CI-PIPE-TMPL-001   | Plantillas de issues y pull request  | Configuración de plataforma | Responsable SCM | Implementado | v0.1.0  | `.github/ISSUE_TEMPLATE/`, `.github/PULL_REQUEST_TEMPLATE.md` | —                              | Media       | PR + CI                          |
@@ -137,8 +138,8 @@ rulesets no viven en el árbol de archivos. Se registra como cambio administrati
 | CI-DOC-TRACE-001   | Matriz de trazabilidad                     | Documentación      | Responsable SCM              | Implementado | v0.1.0  | `docs/traceability-matrix.md`                           | **Crítica** | PR + CI    |
 | CI-DOC-RACI-001    | Roles, responsabilidades y RACI            | Documentación      | Líder de consultoría         | Implementado | v0.1.0  | `docs/raci.md`                                          | Media       | PR + CI    |
 | CI-DOC-DEBT-001    | Registro de deuda técnica                  | Documentación      | Responsable SCM              | Implementado | v0.1.0  | `docs/technical-debt-register.md`                       | **Crítica** | PR + CI    |
-| CI-DOC-CICD-001    | Documentación de CI/CD                     | Documentación      | DevOps                       | Pendiente    | v0.2.0  | `docs/ci-cd.md`                                         | Alta        | PR + CI    |
-| CI-DOC-MAINT-001   | Baseline de mantenimiento para Actividad 4 | Documentación      | Responsable SCM              | Pendiente    | v0.1.0  | `docs/maintenance-baseline.md`                          | **Crítica** | PR + CI    |
+| CI-DOC-CICD-001    | Documentación de CI/CD                     | Documentación      | DevOps                       | Implementado | v0.1.0  | `docs/ci-cd.md`                                         | Alta        | PR + CI    |
+| CI-DOC-MAINT-001   | Baseline de mantenimiento para Actividad 4 | Documentación      | Responsable SCM              | Implementado | v0.1.0  | `docs/maintenance-baseline.md`                          | **Crítica** | PR + CI    |
 | CI-DOC-CONTRIB-001 | Guía de contribución                       | Documentación      | Líder de consultoría         | Implementado | v0.1.0  | `CONTRIBUTING.md`                                       | Media       | PR + CI    |
 | CI-DOC-AGENT-001   | Instrucciones para agentes de código       | Documentación      | Responsable SCM              | Implementado | v0.1.0  | `AGENTS.md`                                             | Baja        | PR + CI    |
 | CI-DOC-RFC-001     | RFC-001 Carné virtual QR                   | Control de cambios | Comité de Control de Cambios | Implementado | v0.1.0  | `docs/rfc/RFC-001-virtual-card.md`                      | Alta        | PR + CI    |
@@ -189,17 +190,17 @@ simulación.
 | ------------------------ | ---------------- | ------------- | --------------- |
 | Aplicación               | 11               | 0             | —               |
 | Configuración técnica    | 12               | 0             | —               |
-| Pruebas                  | 4                | 1             | —               |
-| Automatización CI/CD     | 6                | 4             | —               |
-| Documentación y gobierno | 17               | 5             | —               |
+| Pruebas                  | 5                | 0             | —               |
+| Automatización CI/CD     | 9                | 2             | —               |
+| Documentación y gobierno | 19               | 3             | —               |
 | Artefactos de entrega    | 0                | 6             | —               |
 | Sistemas externos        | —                | —             | 11              |
-| **Total**                | **50**           | **16**        | **11**          |
+| **Total**                | **56**           | **11**        | **11**          |
 
-Los CI marcados como pendientes corresponden a fases posteriores del plan: pruebas end-to-end y
-Docker en la fase de CI completo, workflows de despliegue y release en la fase de CD, y los
-artefactos de entrega en las fases de release. Su estado se actualiza en el momento en que el
-artefacto existe, no antes.
+Los CI marcados como pendientes corresponden a fases posteriores del plan: los workflows de
+despliegue y de release en la fase de automatización de despliegue, el informe de la Actividad 3 y
+el registro de evidencias en la fase final, y los artefactos de entrega en las fases de release. Su
+estado se actualiza en el momento en que el artefacto existe, no antes.
 
 ## Relación con la deuda técnica
 
