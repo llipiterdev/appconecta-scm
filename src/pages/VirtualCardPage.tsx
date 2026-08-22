@@ -5,6 +5,7 @@ import { AsyncSection } from '@/components/feedback/AsyncSection';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { DefinitionEntry } from '@/components/ui/definitionEntry';
 import { useAsyncResource } from '@/hooks/useAsyncResource';
 import { getVirtualCard } from '@/services/virtualCardService';
 
@@ -46,10 +47,10 @@ export function VirtualCardPage() {
                   <p className="text-sm text-slate-600">{card.position}</p>
 
                   <dl className="mt-5 grid gap-x-8 gap-y-4 text-left sm:grid-cols-2">
-                    <CardEntry label="Codigo de colaborador" value={card.employeeCode} />
-                    <CardEntry label="Area" value={card.department} />
-                    <CardEntry label="Fecha de vinculacion" value={card.hireDate} />
-                    <CardEntry label="Estado del carne" value={card.statusLabel} />
+                    <DefinitionEntry label="Codigo de colaborador" value={card.employeeCode} />
+                    <DefinitionEntry label="Area" value={card.department} />
+                    <DefinitionEntry label="Fecha de vinculacion" value={card.hireDate} />
+                    <DefinitionEntry label="Estado del carne" value={card.statusLabel} />
                   </dl>
                 </div>
               </CardContent>
@@ -70,14 +71,5 @@ export function VirtualCardPage() {
         )}
       </AsyncSection>
     </>
-  );
-}
-
-function CardEntry({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="min-w-0">
-      <dt className="text-xs font-medium tracking-wide text-slate-500 uppercase">{label}</dt>
-      <dd className="mt-0.5 text-sm break-words text-slate-900">{value}</dd>
-    </div>
   );
 }
