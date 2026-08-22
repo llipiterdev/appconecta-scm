@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="AppConecta">
+  <rect width="512" height="512" rx="96" fill="#1d4f8c" />
+  <g fill="none" stroke="#ffffff" stroke-width="26" stroke-linecap="round">
+    <circle cx="256" cy="150" r="42" fill="#ffffff" stroke="none" />
+    <circle cx="150" cy="330" r="42" fill="#ffffff" stroke="none" />
+    <circle cx="362" cy="330" r="42" fill="#ffffff" stroke="none" />
+    <path d="M256 192 L172 292" />
+    <path d="M256 192 L340 292" />
+    <path d="M192 330 L320 330" />
+  </g>
+</svg>
