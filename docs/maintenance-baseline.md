@@ -111,6 +111,44 @@ intervención de la Actividad 4 no puede presentarse como una corrección de seg
 La última fila es una condición de validez de todo lo anterior. Si la baseline se hubiera obtenido
 deshabilitando pruebas, los porcentajes de cobertura serían ficción.
 
+## Estado del módulo legacy al cerrar la Actividad 3
+
+La medición anterior se tomó sobre v0.1.0. La Actividad 3 terminó en **v0.2.0**, que incorporó el
+carné virtual y el pipeline de despliegue, de modo que corresponde comprobar si el punto de partida
+de la Actividad 4 sigue siendo el mismo.
+
+| Indicador del módulo legacy    | v0.1.0 | v0.2.0 | Variación |
+| ------------------------------ | ------ | ------ | --------- |
+| Complejidad ciclomática máxima | 26     | 26     | Ninguna   |
+| Líneas del archivo             | 580    | 580    | Ninguna   |
+| Accesos a `localStorage`       | 8      | 8      | Ninguna   |
+| Clones de validación (TD-003)  | 2      | 2      | Ninguna   |
+
+El módulo es **idéntico** en ambas versiones. Eso no ocurrió por casualidad: el carné virtual se
+implementó en un módulo independiente precisamente porque RFC-001 condicionaba su aprobación a no
+agravar TD-001 ni TD-005, y el control de no regresión verificó esa condición en cada pull request
+con tolerancia cero.
+
+La invariancia es en sí misma un resultado de la Actividad 3. Demuestra que la deuda quedó
+**contenida**, no solo documentada: se añadió funcionalidad nueva sin que el módulo reservado
+creciera ni un punto de complejidad.
+
+Las métricas de proyecto que sí variaron, todas a mejor:
+
+| Indicador de proyecto        | v0.1.0  | v0.2.0  |
+| ---------------------------- | ------- | ------- |
+| Cobertura de sentencias      | 89,19 % | 90,02 % |
+| Cobertura de ramas           | 75,00 % | 75,43 % |
+| Cobertura de funciones       | 91,81 % | 93,22 % |
+| Duplicación                  | 0,77 %  | 0,71 %  |
+| Pruebas unitarias            | 60      | 72      |
+| Pruebas de extremo a extremo | 20      | 22      |
+
+Por tanto, **la columna «antes» de la matriz sigue siendo válida** para los indicadores del módulo
+legacy, que son los que la intervención debe mover. Para los indicadores de proyecto, la comparación
+de la Actividad 4 debe partir de los valores de v0.2.0, que son los que quedan registrados en
+`metrics-baseline.json`.
+
 ## Intervención reservada
 
 La guía del taller de la Sesión 5 define la intervención:
@@ -144,16 +182,19 @@ refactorización concentre primero el tratamiento de fechas en un solo punto.
 
 ## Matriz antes y después
 
-| Dimensión                            | Antes (v0.1.0) | Después | Variación |
+La columna «antes» recoge el estado al cerrar la Actividad 3, es decir **v0.2.0**. Para los
+indicadores del módulo legacy coincide con v0.1.0, porque el módulo no se tocó.
+
+| Dimensión                            | Antes (v0.2.0) | Después | Variación |
 | ------------------------------------ | -------------- | ------- | --------- |
 | Complejidad ciclomática máxima       | 26             | —       | —         |
 | Líneas de la función mayor           | 204            | —       | —         |
 | Líneas del archivo mayor             | 580            | —       | —         |
 | Complejidad acumulada del módulo     | 85             | —       | —         |
-| Duplicación del proyecto             | 0,77 %         | —       | —         |
+| Duplicación del proyecto             | 0,71 %         | —       | —         |
 | Clones detectados                    | 2              | —       | —         |
-| Cobertura de sentencias              | 89,19 %        | —       | —         |
-| Cobertura de ramas                   | 75,00 %        | —       | —         |
+| Cobertura de sentencias              | 90,02 %        | —       | —         |
+| Cobertura de ramas                   | 75,43 %        | —       | —         |
 | Accesos directos a `localStorage`    | 8              | —       | —         |
 | Puertos de persistencia              | 0              | —       | —         |
 | Contratos sin adaptador              | 4              | —       | —         |
