@@ -82,20 +82,24 @@ Diez de los requisitos anteriores cuentan además con verificación end-to-end e
 
 ## 3. Trazabilidad de las integraciones realizadas
 
-| Issue  | Rama                     | Commits (en orden)                                    | Pull request                                                 | Merge commit | Checks      | Versión |
-| ------ | ------------------------ | ----------------------------------------------------- | ------------------------------------------------------------ | ------------ | ----------- | ------- |
-| #1     | `feature/scm-bootstrap`  | `59b3f1a`, `0cb47f6`, `eb93ce1`, `33511c8`, `e0313d1` | [#10](https://github.com/llipiterdev/appconecta-scm/pull/10) | `7e62962`    | 4 en verde  | v0.1.0  |
-| #1     | `feature/app-shell`      | `0d3b239`, `c1be172`, `11dec1c`, `8fc3b90`, `de5aef6` | [#11](https://github.com/llipiterdev/appconecta-scm/pull/11) | `c7d7609`    | 4 en verde  | v0.1.0  |
-| #2, #9 | `feature/legacy-modules` | `8248fec`, `ab74b6a`, `53e2301`, `a4d6a28`, `ebb41c9` | [#12](https://github.com/llipiterdev/appconecta-scm/pull/12) | `207fcd3`    | 4 en verde  | v0.1.0  |
-| #3     | `feature/scm-governance` | _en curso_                                            | _pendiente_                                                  | _pendiente_  | _pendiente_ | v0.1.0  |
-| #4     | `feature/ci-pipeline`    | _pendiente_                                           | _pendiente_                                                  | _pendiente_  | _pendiente_ | v0.1.0  |
-| #7     | `release/0.1.0`          | _pendiente_                                           | _pendiente_                                                  | _pendiente_  | _pendiente_ | v0.1.0  |
-| #5     | `feature/virtual-card`   | _pendiente_                                           | _pendiente_                                                  | _pendiente_  | _pendiente_ | v0.2.0  |
-| #6     | `feature/cd-automation`  | _pendiente_                                           | _pendiente_                                                  | _pendiente_  | _pendiente_ | v0.2.0  |
-| #8     | `release/0.2.0`          | _pendiente_                                           | _pendiente_                                                  | _pendiente_  | _pendiente_ | v0.2.0  |
+| Issue  | Rama                        | Commits (en orden)                                                          | Pull request                                                 | Merge commit | Checks      | Versión |
+| ------ | --------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------ | ------------ | ----------- | ------- |
+| #1     | `feature/scm-bootstrap`     | `59b3f1a`, `0cb47f6`, `eb93ce1`, `33511c8`, `e0313d1`                       | [#10](https://github.com/llipiterdev/appconecta-scm/pull/10) | `7e62962`    | 4 en verde  | v0.1.0  |
+| #1     | `feature/app-shell`         | `0d3b239`, `c1be172`, `11dec1c`, `8fc3b90`, `de5aef6`                       | [#11](https://github.com/llipiterdev/appconecta-scm/pull/11) | `c7d7609`    | 4 en verde  | v0.1.0  |
+| #2, #9 | `feature/legacy-modules`    | `8248fec`, `ab74b6a`, `53e2301`, `a4d6a28`, `ebb41c9`                       | [#12](https://github.com/llipiterdev/appconecta-scm/pull/12) | `207fcd3`    | 4 en verde  | v0.1.0  |
+| #3     | `feature/scm-governance`    | `d5201b3`, `7399e59`, `4cc5739`, `fa9bfa4`, `e0fdccf`, `8dcade5`, `d1f2fee` | [#13](https://github.com/llipiterdev/appconecta-scm/pull/13) | `a2b8394`    | 4 en verde  | v0.1.0  |
+| #4     | `feature/ci-pipeline`       | `2af5b91`, `83f9ba9`, `9f7b0f0`, `831d286`, `c2de2c3`, `b9a9aa9`            | [#14](https://github.com/llipiterdev/appconecta-scm/pull/14) | `8719d68`    | 7 en verde  | v0.1.0  |
+| #7     | `release/0.1.0` → `main`    | `1a5f6cc`, `dcd04a9`, `5042a93`                                             | [#15](https://github.com/llipiterdev/appconecta-scm/pull/15) | `878c94b`    | 7 en verde  | v0.1.0  |
+| #7     | `release/0.1.0` → `develop` | reintegración de los tres commits anteriores                                | [#22](https://github.com/llipiterdev/appconecta-scm/pull/22) | `6c8bbc5`    | 7 en verde  | v0.1.0  |
+| #5     | `feature/virtual-card`      | _pendiente_                                                                 | _pendiente_                                                  | _pendiente_  | _pendiente_ | v0.2.0  |
+| #6     | `feature/cd-automation`     | _pendiente_                                                                 | _pendiente_                                                  | _pendiente_  | _pendiente_ | v0.2.0  |
+| #8     | `release/0.2.0`             | _pendiente_                                                                 | _pendiente_                                                  | _pendiente_  | _pendiente_ | v0.2.0  |
 
-Los cuatro checks obligatorios son: mensajes de commit, calidad estática, pruebas y build de
-producción.
+El número de checks cambia entre filas y el cambio es real, no un descuido de la tabla. Los tres
+primeros pull requests se validaron con cuatro checks obligatorios: mensajes de commit, calidad
+estática, pruebas y build. Al integrarse `feature/ci-pipeline`, el pipeline incorporó las pruebas
+de extremo a extremo, las métricas con control de no regresión y la construcción del contenedor, y
+los rulesets de `main` y `develop` pasaron a exigir los siete.
 
 ## 4. Trazabilidad del control de cambios
 
@@ -104,8 +108,9 @@ producción.
 | Scaffold y herramientas    | Cambio estándar  | Issue + PR + CI             | #1          | `feature/scm-bootstrap`  | Cerrado     |
 | Shell responsive y PWA     | Cambio estándar  | Issue + PR + CI             | #1          | `feature/app-shell`      | Cerrado     |
 | Módulos del portal y deuda | Cambio estándar  | Issue + PR + CI             | #2, #9      | `feature/legacy-modules` | Cerrado     |
-| Gobierno SCM               | Cambio estándar  | Issue + PR + CI             | #3          | `feature/scm-governance` | En curso    |
-| Pipeline CI completo       | Cambio estándar  | Issue + PR + CI             | #4          | `feature/ci-pipeline`    | Planificado |
+| Gobierno SCM               | Cambio estándar  | Issue + PR + CI             | #3          | `feature/scm-governance` | Cerrado     |
+| Pipeline CI completo       | Cambio estándar  | Issue + PR + CI             | #4          | `feature/ci-pipeline`    | Cerrado     |
+| Entrega v0.1.0             | Cambio estándar  | Issue + PR + CI + release   | #7          | `release/0.1.0`          | Cerrado     |
 | Carné virtual QR           | **Cambio mayor** | **RFC-001 + CCB + PR + CI** | #5, RFC-001 | `feature/virtual-card`   | Aprobado    |
 | Pipeline CD                | Cambio estándar  | Issue + PR + CI             | #6          | `feature/cd-automation`  | Planificado |
 | Rulesets de protección     | Administrativo   | Registro documentado        | —           | No aplica                | Cerrado     |
@@ -130,14 +135,14 @@ se contrae, no cuando alguien la descubre después.
 
 ## 6. Trazabilidad de baselines
 
-| Baseline      | Identificador Git | Contenido                      | Documento           | Estado             |
-| ------------- | ----------------- | ------------------------------ | ------------------- | ------------------ |
-| `BL-FUNC-001` | `114e7b2`         | Alcance y requisitos aprobados | `docs/baselines.md` | Establecida        |
-| `BL-DES-001`  | _pendiente_       | Arquitectura y decisiones      | `docs/baselines.md` | En establecimiento |
-| `BL-DEV-001`  | `v0.1.0-rc.1`     | Código candidato a v0.1.0      | `docs/baselines.md` | Pendiente          |
-| `BL-PROD-001` | `v0.1.0`          | Primera entrega                | `docs/baselines.md` | Pendiente          |
-| `BL-DEV-002`  | `v0.2.0-rc.1`     | Código candidato a v0.2.0      | `docs/baselines.md` | Pendiente          |
-| `BL-PROD-002` | `v0.2.0`          | Segunda entrega                | `docs/baselines.md` | Pendiente          |
+| Baseline      | Identificador Git | Contenido                      | Documento           | Estado      |
+| ------------- | ----------------- | ------------------------------ | ------------------- | ----------- |
+| `BL-FUNC-001` | `114e7b2`         | Alcance y requisitos aprobados | `docs/baselines.md` | Establecida |
+| `BL-DES-001`  | `a2b8394`         | Arquitectura y decisiones      | `docs/baselines.md` | Establecida |
+| `BL-DEV-001`  | `v0.1.0-rc.1`     | Código candidato a v0.1.0      | `docs/baselines.md` | Establecida |
+| `BL-PROD-001` | `v0.1.0`          | Primera entrega                | `docs/baselines.md` | Establecida |
+| `BL-DEV-002`  | `v0.2.0-rc.1`     | Código candidato a v0.2.0      | `docs/baselines.md` | Pendiente   |
+| `BL-PROD-002` | `v0.2.0`          | Segunda entrega                | `docs/baselines.md` | Pendiente   |
 
 ## 7. Cobertura de la trazabilidad
 
