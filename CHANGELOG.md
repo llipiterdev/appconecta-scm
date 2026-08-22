@@ -11,6 +11,72 @@ integrados mediante pull request; no se registran cambios que no existan en el h
 
 Sin cambios pendientes de publicación.
 
+## [0.2.0] — 2026-08-22
+
+Segunda entrega. Incorpora el carné virtual del colaborador y cierra el ciclo de automatización con
+los pipelines de despliegue y de publicación de versiones.
+
+El carné es la primera modificación sobre una baseline ya establecida tramitada por el proceso
+formal de control de cambios: solicitud RFC-001, evaluación de impacto, aprobación condicionada,
+implementación, verificación de las condiciones y liberación.
+
+### Añadido
+
+**Carné virtual del colaborador (RFC-001)**
+
+- Sección accesible desde la navegación, con nombre, cargo, área, código de empleado y fecha de
+  vinculación (`51a4c7a`).
+- Código QR generado a partir de datos ficticios, con texto alternativo y con el contenido
+  codificado visible en la propia pantalla (`51a4c7a`).
+- Estado del carné, activo o inactivo, comunicado por texto además de por color (`51a4c7a`).
+- Doce pruebas que cubren los ocho casos de RFC-001 (`660c8fc`).
+
+**Automatización del despliegue**
+
+- Despliegue en GitHub Pages en cada integración en `main`, con validaciones previas y smoke test
+  con reintentos sobre la URL publicada (`764ca83`).
+- Publicación por tag `v*.*.*`: verificación de SemVer y de coincidencia con `package.json`,
+  artefacto con suma SHA-256 e imagen etiquetada en GHCR (`9574022`).
+
+### Cambiado
+
+- La validación de mensajes de commit distingue commits ordinarios, que se verifican por completo,
+  de commits de merge, de los que se exige la cabecera (`5042a93`).
+- El componente de par etiqueta/valor se comparte entre el perfil y el carné, en lugar de estar
+  duplicado (`7f5e959`).
+- La convención de ramas incorpora el prefijo `chore/*` para el mantenimiento del repositorio
+  (`174a10f`).
+- La imagen de contenedor pasa a `nginxinc/nginx-unprivileged`, que sí puede ejecutarse sin
+  privilegios de root (`b9a9aa9`).
+
+### Eliminado
+
+- `PendingSectionPage`. El carné era la última sección sin módulo funcional y el marcador quedaba
+  sin uso (`51a4c7a`).
+
+### Métricas
+
+Todas mejoran o se mantienen respecto a v0.1.0. Los indicadores del módulo legacy son **idénticos**,
+lo que evidencia que la deuda reservada quedó contenida mientras se añadía funcionalidad nueva.
+
+| Métrica                        | v0.1.0  | v0.2.0      |
+| ------------------------------ | ------- | ----------- |
+| Cobertura de sentencias        | 89,19 % | **90,02 %** |
+| Cobertura de ramas             | 75,00 % | **75,43 %** |
+| Cobertura de funciones         | 91,81 % | **93,22 %** |
+| Duplicación                    | 0,77 %  | **0,71 %**  |
+| Complejidad ciclomática máxima | 26      | 26          |
+| Líneas del módulo legacy       | 580     | 580         |
+| Vulnerabilidades high/critical | 0       | 0           |
+| Pruebas unitarias              | 60      | **72**      |
+| Pruebas de extremo a extremo   | 20      | **22**      |
+
+### Notas
+
+- La deuda TD-001 a TD-009 **sigue abierta**, medida y reservada para la Actividad 4.
+- Ninguna dependencia con vulnerabilidades `high` o `critical` fue incorporada: `qrcode` 1.5.4 se
+  verificó antes de añadirla, como exigía la condición del Comité en RFC-001.
+
 ## [0.1.0] — 2026-08-22
 
 Primera baseline funcional de la simulación de AppConecta. La versión entrega el portal del
@@ -96,5 +162,6 @@ Medidas sobre esta versión y versionadas en `metrics-baseline.json`:
 - Todas las integraciones con sistemas corporativos son simuladas. No existe backend, base de
   datos, autenticación real ni datos personales reales.
 
-[no publicado]: https://github.com/llipiterdev/appconecta-scm/compare/v0.1.0...develop
+[no publicado]: https://github.com/llipiterdev/appconecta-scm/compare/v0.2.0...develop
+[0.2.0]: https://github.com/llipiterdev/appconecta-scm/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/llipiterdev/appconecta-scm/releases/tag/v0.1.0

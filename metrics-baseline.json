@@ -1,15 +1,23 @@
 {
-  "description": "Baseline de metricas medida sobre la version v0.1.0. Los valores no son objetivos: son el estado real contra el que se compara para evitar que las metricas empeoren en silencio.",
+  "description": "Baseline de metricas medida sobre la version v0.2.0, estado final de la Actividad 3. Los valores no son objetivos: son el estado real contra el que se compara para evitar que las metricas empeoren en silencio.",
   "measuredAt": "2026-08-22",
-  "measuredOn": "feature/ci-pipeline",
-  "version": "0.1.0",
+  "measuredOn": "release/0.2.0",
+  "version": "0.2.0",
+  "history": {
+    "0.1.0": {
+      "note": "Primera baseline. Los indicadores del modulo legacy no han variado desde entonces porque la deuda reservada no se toco.",
+      "coverage": { "statements": 89.19, "branches": 75, "functions": 91.81, "lines": 89.08 },
+      "duplication": { "percentage": 0.77 },
+      "complexity": { "maxComplexity": 26, "largestFileLines": 580 }
+    }
+  },
   "coverage": {
-    "statements": 89.19,
-    "branches": 75,
-    "functions": 91.81,
-    "lines": 89.08,
+    "statements": 90.02,
+    "branches": 75.43,
+    "functions": 93.22,
+    "lines": 89.94,
     "tolerancePoints": 1,
-    "rationale": "La tolerancia de un punto absorbe el efecto de anadir codigo nuevo cubierto de forma desigual, sin permitir que la cobertura se degrade de forma apreciable."
+    "rationale": "La tolerancia de un punto absorbe el efecto de anadir codigo nuevo cubierto de forma desigual, sin permitir que la cobertura se degrade de forma apreciable. Los valores suben respecto a v0.1.0 porque el carne virtual llego con sus pruebas: el liston se ajusta al estado real, no se deja en el anterior."
   },
   "complexity": {
     "maxComplexity": 26,
@@ -17,14 +25,14 @@
     "maxComplexityFile": "src/services/legacyEmployeeService.ts",
     "largestFileLines": 580,
     "tolerance": 0,
-    "rationale": "TD-005 esta reservada para la Actividad 4. La deuda puede permanecer, pero no crecer: cualquier aumento de la complejidad maxima invalidaria la comparacion antes/despues."
+    "rationale": "TD-005 esta reservada para la Actividad 4. La deuda puede permanecer, pero no crecer: cualquier aumento de la complejidad maxima invalidaria la comparacion antes/despues. Estos valores son identicos a los de v0.1.0, lo que evidencia que la deuda quedo contenida."
   },
   "duplication": {
-    "percentage": 0.77,
+    "percentage": 0.71,
     "clones": 2,
     "duplicatedLines": 20,
     "tolerancePoints": 0.5,
-    "rationale": "TD-003 esta registrada y reservada. La tolerancia permite refactorizaciones que muevan codigo sin abrir la puerta a duplicacion nueva."
+    "rationale": "TD-003 esta registrada y reservada. La tolerancia permite refactorizaciones que muevan codigo sin abrir la puerta a duplicacion nueva. El valor baja respecto a v0.1.0 al extraer un componente de interfaz compartido durante el desarrollo del carne."
   },
   "vulnerabilities": {
     "critical": 0,

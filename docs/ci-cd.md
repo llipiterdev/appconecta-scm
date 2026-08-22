@@ -268,7 +268,18 @@ inmediata y fallar al primer intento reportaría una condición transitoria como
 
 ### Publicación de versión por tag
 
-Se dispara con cualquier tag `v*.*.*` y encadena tres jobs, con el de verificación como puerta.
+Se dispara con tags de versión liberada y encadena tres jobs, con el de verificación como puerta.
+
+El filtro es `v[0-9]+.[0-9]+.[0-9]+`, no `v*.*.*`, y la diferencia no es cosmética. El primer patrón
+que se escribió era el segundo, y al etiquetar la baseline de desarrollo `v0.2.0-rc.1` el workflow
+se disparó y falló: comparó `0.2.0-rc.1` contra el `0.2.0` de `package.json` y las declaró
+discrepantes. La comprobación hizo su trabajo; el defecto estaba en el disparador.
+
+Un tag de candidato identifica una **baseline de desarrollo**, no una entrega. No debe producir un
+release ni publicar una imagen, porque nada de eso se libera al cliente. El patrón exige ahora que
+el ref termine en el número de parche, con lo que cualquier sufijo de pre-release queda fuera. La
+ejecución fallida se conserva en el historial de Actions como evidencia del defecto y su
+corrección.
 
 | Job         | Responsabilidad                                                        |
 | ----------- | ---------------------------------------------------------------------- |
@@ -283,6 +294,23 @@ de cometer al liberar y el más caro de descubrir después.
 Los artefactos se publican con su suma de verificación. Sin ella, el archivo adjunto es solo un
 archivo con un nombre de versión: nada permite comprobar que lo descargado es lo que produjo el
 pipeline.
+
+### Repetición de una publicación
+
+El workflow admite además ejecución manual con el tag como parámetro. La razón salió de un segundo
+fallo real: en la publicación de v0.2.0, el job de verificación ejecutaba el control de no regresión
+**sin haber generado antes las mediciones**, de modo que el script no encontraba el resumen de
+cobertura y fallaba. El tag ya estaba publicado y el release creado, pero sin artefactos.
+
+La salida cómoda habría sido mover el tag para volver a disparar el workflow. Se descartó: un tag
+que se mueve deja de identificar una baseline, que es justamente lo único que un tag aporta. La
+entrada manual permite repetir la publicación sobre el tag existente, y los tres jobs extraen el
+árbol del tag en lugar del de la rama, porque verificar una versión contra un código que no es el
+suyo no verifica nada.
+
+Ese es también el motivo de que las etiquetas de la imagen se deriven de la versión verificada y no
+del ref del evento: en una ejecución manual el ref es la rama, y dejar que la acción lo dedujera
+produciría una imagen etiquetada `main`.
 
 ### Ausencia de secretos externos
 

@@ -2,14 +2,31 @@ name: Publicacion de version
 
 on:
   push:
-    tags: ['v*.*.*']
+    # Solo versiones liberadas. Un tag de candidato como v0.2.0-rc.1 identifica una baseline de
+    # desarrollo, no una entrega: no debe producir un release ni publicar una imagen. El patron
+    # exige que el ref termine en el numero de parche, de modo que cualquier sufijo de
+    # pre-release queda fuera.
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
+
+  # Permite repetir la publicacion de un tag que ya existe. Si la ejecucion automatica falla por un
+  # defecto del propio workflow, la alternativa seria mover el tag para volver a dispararlo, y un
+  # tag que se mueve deja de identificar una baseline. Esta entrada evita esa tentacion.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Tag de version a publicar, por ejemplo v0.2.0
+        required: true
+        type: string
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: release-${{ inputs.tag || github.ref_name }}
   cancel-in-progress: false
 
 permissions:
   contents: read
+
+env:
+  RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
 
 jobs:
   verify:
@@ -18,10 +35,15 @@ jobs:
     timeout-minutes: 20
     outputs:
       version: ${{ steps.version.outputs.version }}
-      prerelease: ${{ steps.version.outputs.prerelease }}
+      sha: ${{ steps.version.outputs.sha }}
     steps:
-      - name: Checkout del codigo
+      # Se extrae el arbol del tag y no el de la rama por defecto. En una ejecucion manual son
+      # cosas distintas, y verificar una version contra un codigo que no es el suyo no verifica
+      # nada.
+      - name: Checkout del tag
         uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.tag || github.ref_name }}
 
       # Un tag que no coincide con package.json produce una version imposible de rastrear: el
       # release dice una cosa y el artefacto otra. Es el error mas facil de cometer al liberar y
@@ -29,12 +51,11 @@ jobs:
       - name: Validar el formato y la coincidencia con package.json
         id: version
         run: |
-          tag="${GITHUB_REF#refs/tags/}"
+          tag="$RELEASE_TAG"
           version="${tag#v}"
 
-          if ! printf '%s' "$version" \
-            | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$'; then
-            echo "El tag $tag no sigue el formato SemVer vX.Y.Z o vX.Y.Z-prerelease."
+          if ! printf '%s' "$version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "El tag $tag no sigue el formato SemVer vX.Y.Z."
             exit 1
           fi
 
@@ -46,14 +67,9 @@ jobs:
             exit 1
           fi
 
-          case "$version" in
-            *-*) prerelease=true ;;
-            *) prerelease=false ;;
-          esac
-
           echo "version=$version" >> "$GITHUB_OUTPUT"
-          echo "prerelease=$prerelease" >> "$GITHUB_OUTPUT"
-          echo "Version $version verificada. Pre-release: $prerelease."
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "Version $version verificada."
 
       - name: Configurar Node.js
         uses: actions/setup-node@v6
@@ -68,8 +84,19 @@ jobs:
         run: |
           npm run lint
           npm run typecheck
-          npm run test
-          npm run metrics:gate
+
+      # El control de no regresion compara contra archivos de medicion: el resumen de cobertura, el
+      # informe de complejidad y el de duplicacion. Sin generarlos antes, el script no encuentra
+      # nada que comparar. Se miden aqui en el mismo orden que en el pipeline de integracion.
+      - name: Medir antes de comparar
+        run: |
+          npm run metrics:complexity
+          npm run metrics:duplication
+          npm run metrics:audit
+          npm run test:coverage
+
+      - name: Control de no regresion frente a la baseline
+        run: npm run metrics:gate
 
   artifact:
     name: Publicar el artefacto de la version
@@ -81,8 +108,10 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout del codigo
+      - name: Checkout del tag
         uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.tag || github.ref_name }}
 
       - name: Configurar Node.js
         uses: actions/setup-node@v6
@@ -114,7 +143,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release upload "${GITHUB_REF#refs/tags/}" \
+          gh release upload "$RELEASE_TAG" \
             "${{ steps.paquete.outputs.nombre }}" \
             "${{ steps.paquete.outputs.nombre }}.sha256" \
             --clobber
@@ -129,8 +158,10 @@ jobs:
       packages: write
 
     steps:
-      - name: Checkout del codigo
+      - name: Checkout del tag
         uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.tag || github.ref_name }}
 
       - name: Configurar Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -150,10 +181,13 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}
+          # Las etiquetas se derivan de la version verificada y no del ref del evento. En una
+          # ejecucion manual el ref es la rama, no el tag, y dejar que la accion lo dedujera
+          # produciria una imagen etiquetada con el nombre de la rama.
           tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=sha,format=long
+            type=semver,pattern={{version}},value=${{ needs.verify.outputs.version }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ needs.verify.outputs.version }}
+            type=raw,value=sha-${{ needs.verify.outputs.sha }}
           labels: |
             org.opencontainers.image.version=${{ needs.verify.outputs.version }}
 
