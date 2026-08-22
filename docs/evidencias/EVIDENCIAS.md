@@ -156,26 +156,18 @@ Trece validaciones, todas con resultado de éxito sobre el commit `762144a`.
 
 ## 10. Capturas
 
-**Estado: pendientes.** La captura automatizada no se completó en esta sesión y la carpeta
-`capturas/` no existe todavía. Se registran aquí las URLs exactas para que puedan tomarse de forma
-manual sobre el despliegue real, que es lo que se documentaría en cualquier caso.
+En [`capturas/`](capturas/), tomadas sobre <https://llipiterdev.github.io/appconecta-scm/>, es
+decir sobre el artefacto desplegado y no sobre un servidor local. Se navegó por los enlaces de la
+propia interfaz, sin escribir rutas directamente.
 
-| Pantalla                        | URL                                                 |
-| ------------------------------- | --------------------------------------------------- |
-| Dashboard del colaborador       | <https://llipiterdev.github.io/appconecta-scm/>     |
-| Carné virtual con código QR     | Navegación → «Carné»                                |
-| Documentos laborales            | Navegación → «Documentos»                           |
-| Desprendibles de nómina         | Navegación → «Nómina»                               |
-| Solicitudes de Recursos Humanos | Navegación → «Solicitudes»                          |
-| Vista móvil                     | Cualquiera de las anteriores con viewport de 390 px |
-
-Las secciones se alcanzan por la navegación de la propia interfaz y no escribiendo la ruta: un
-enlace directo devuelve estado 404 y el documento de redirección, que el navegador resuelve del
-lado del cliente. Ese comportamiento es el diseñado y está explicado en
-[`docs/ci-cd.md`](../ci-cd.md).
-
-Anunciar aquí seis archivos que no existen sería exactamente el tipo de evidencia fabricada que
-este trabajo evita. La sección se completa cuando los archivos estén, no antes.
+| Archivo                       | Contenido                                             |
+| ----------------------------- | ----------------------------------------------------- |
+| `01-dashboard-escritorio.png` | Dashboard del colaborador en escritorio (1440×900)    |
+| `02-carne-virtual.png`        | Carné virtual con su código QR                        |
+| `03-documentos.png`           | Consulta de documentos laborales                      |
+| `04-nomina.png`               | Consulta de desprendibles de nómina                   |
+| `05-solicitudes.png`          | Solicitudes de Recursos Humanos                       |
+| `06-dashboard-movil.png`      | Dashboard en móvil (390×844), con navegación inferior |
 
 ## 11. Documentación de gobierno
 
