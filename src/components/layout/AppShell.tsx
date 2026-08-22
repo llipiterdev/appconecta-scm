@@ -22,10 +22,13 @@ export function AppShell() {
       <div className="mx-auto flex w-full max-w-6xl flex-1 gap-8 px-4 py-4 lg:px-6 lg:py-6">
         <DesktopSidebar />
 
-        <main id="contenido-principal" className="min-w-0 flex-1 pb-20 lg:pb-0">
+        <div className="min-w-0 flex-1 pb-20 lg:pb-0">
           <SecondaryNavigation />
-          <Outlet />
-        </main>
+
+          <main id="contenido-principal">
+            <Outlet />
+          </main>
+        </div>
       </div>
 
       <MobileNavigation />
