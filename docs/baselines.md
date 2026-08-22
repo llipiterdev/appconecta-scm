@@ -95,14 +95,29 @@ Las ramas `release/*` **no se eliminan** hasta que la evidencia de la entrega es
 
 **Contenido:** versión formalmente liberada, con todos sus artefactos de entrega.
 
-| Identificador | Tag      | Contenido funcional                                                         | Artefactos asociados                                                | Estado    |
-| ------------- | -------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------- | --------- |
-| `BL-PROD-001` | `v0.1.0` | Ocho módulos del portal, deuda TD-001 a TD-009 medida, pipeline CI completo | GitHub Release, artefacto `dist/`, imagen de contenedor             | Pendiente |
-| `BL-PROD-002` | `v0.2.0` | Carné virtual QR, modelo SCM implementado, CI/CD funcional                  | GitHub Release, `dist/`, imagen en GHCR, despliegue en GitHub Pages | Pendiente |
+| Identificador | Tag      | Contenido funcional                                                         | Artefactos asociados                                                | Estado      |
+| ------------- | -------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------- | ----------- |
+| `BL-PROD-001` | `v0.1.0` | Ocho módulos del portal, deuda TD-001 a TD-009 medida, pipeline CI completo | GitHub Release, artefacto `dist/`, imagen de contenedor             | Establecida |
+| `BL-PROD-002` | `v0.2.0` | Carné virtual QR, modelo SCM implementado, CI/CD funcional                  | GitHub Release, `dist/`, imagen en GHCR, despliegue en GitHub Pages | Pendiente   |
 
 Una baseline productiva se considera establecida únicamente cuando **todos** sus artefactos
 existen y son verificables. Un tag sin release, o un release sin despliegue verificado, es una
 baseline incompleta y así debe declararse.
+
+Artefactos verificados de `BL-PROD-001`:
+
+| Artefacto            | Identificación                                                                      |
+| -------------------- | ----------------------------------------------------------------------------------- |
+| Merge commit         | `878c94b` en `main`, procedente del PR #15                                          |
+| Tag anotado          | `v0.1.0`, con las métricas medidas en el propio mensaje del tag                     |
+| GitHub Release       | [v0.1.0](https://github.com/llipiterdev/appconecta-scm/releases/tag/v0.1.0)         |
+| Artefacto de build   | `appconecta-v0.1.0-dist.zip`, adjunto al release                                    |
+| Suma de verificación | SHA-256 `9bd3ccd5915bceea259d62221ce683faf12aef25dd59a85ac56f9e3113b921c1`          |
+| Imagen de contenedor | Construida y verificada en CI y en local; su publicación en GHCR llega con `v0.2.0` |
+
+La imagen todavía no se publica en un registro. `BL-PROD-001` es por tanto una baseline
+**completa para su alcance**: la publicación en GHCR y el despliegue pertenecen al pipeline de
+entrega, que forma parte de la siguiente versión. Declararla desplegada hoy sería falso.
 
 `BL-PROD-001` es además la **baseline de mantenimiento**: el estado medido contra el cual la
 Actividad 4 comparará el efecto de la refactorización. Sus métricas viven en
@@ -153,7 +168,7 @@ la propiedad que justifica la existencia de las baselines.
 | `BL-FUNC-001` | 21 de agosto de 2026     | `114e7b2`         | Definición de alcance | Commit inicial en `main`  |
 | `BL-DES-001`  | 22 de agosto de 2026     | `a2b8394`         | PR #13 a `develop`    | Merge commit en `develop` |
 | `BL-DEV-001`  | 22 de agosto de 2026     | `1a5f6cc`         | Pipeline completo     | Tag anotado `v0.1.0-rc.1` |
-| `BL-PROD-001` | _pendiente_              | `v0.1.0`          | PR a `main` + release | _pendiente_               |
+| `BL-PROD-001` | 22 de agosto de 2026     | `878c94b`         | PR #15 a `main`       | Tag `v0.1.0` y release    |
 | `BL-DEV-002`  | _pendiente_              | `v0.2.0-rc.1`     | Pipeline completo     | _pendiente_               |
 | `BL-PROD-002` | _pendiente_              | `v0.2.0`          | PR a `main` + release | _pendiente_               |
 
