@@ -25,11 +25,49 @@ La aplicación de este repositorio es una **Progressive Web App** que representa
 académicamente el cliente móvil de AppConecta, para poder evidenciar de forma verificable
 una estrategia de control de versiones, gestión de configuración y automatización DevOps.
 
+## Documentación
+
+### Gestión de configuración
+
+| Documento                                                    | Contenido                                                  |
+| ------------------------------------------------------------ | ---------------------------------------------------------- |
+| [Configuration Items](docs/configuration-items.md)           | Inventario de los 66 CI con sus diez atributos             |
+| [Baselines](docs/baselines.md)                               | Baselines funcional, de diseño, de desarrollo y productiva |
+| [Control de cambios](docs/change-control.md)                 | Proceso, niveles de cambio y registro administrativo       |
+| [Matriz de trazabilidad](docs/traceability-matrix.md)        | De requisito a despliegue, con identificadores reales      |
+| [Roles y RACI](docs/raci.md)                                 | Estructura organizacional y responsabilidades              |
+| [Registro de deuda técnica](docs/technical-debt-register.md) | TD-001 a TD-009 con baseline medida                        |
+
+### Control de versiones
+
+| Documento                                             | Contenido                              |
+| ----------------------------------------------------- | -------------------------------------- |
+| [Estrategia de ramas](docs/git-workflow.md)           | GitFlow liviano y su justificación     |
+| [Versionamiento semántico](docs/versioning.md)        | Política SemVer, tags y releases       |
+| [Convención de commits](docs/conventional-commits.md) | Conventional Commits y su verificación |
+| [Guía de contribución](CONTRIBUTING.md)               | Cómo trabajar en el repositorio        |
+
+### Arquitectura y decisiones
+
+| Documento                                     | Contenido                                |
+| --------------------------------------------- | ---------------------------------------- |
+| [Arquitectura](docs/architecture.md)          | Componentes, capas y despliegue          |
+| [ADR-0001](docs/adr/0001-simulation-scope.md) | Alcance simulado del sistema             |
+| [ADR-0002](docs/adr/0002-gitflow-strategy.md) | GitFlow liviano como estrategia de ramas |
+| [ADR-0003](docs/adr/0003-ci-cd-platform.md)   | GitHub Actions, Pages y GHCR             |
+| [RFC-001](docs/rfc/RFC-001-virtual-card.md)   | Carné virtual QR del colaborador         |
+
+### Contexto académico
+
+| Documento                                       | Contenido                                |
+| ----------------------------------------------- | ---------------------------------------- |
+| [Unidad 1](docs/unidad-1/analisis-evolucion.md) | Evolución, deuda técnica y mantenimiento |
+| [Unidad 2](docs/unidad-2/estrategia-scm.md)     | Estrategia de gestión de configuración   |
+
 ## Estado
 
-Repositorio en fase de inicialización. La documentación completa de arquitectura,
-Configuration Items, baselines, control de cambios, trazabilidad, deuda técnica y CI/CD
-se incorpora en las fases siguientes y vivirá en `docs/`.
+Baseline de diseño establecida. El pipeline de CI completo, la automatización de despliegue y
+las versiones v0.1.0 y v0.2.0 se incorporan en las fases siguientes.
 
 ## Integrantes
 
