@@ -2,7 +2,11 @@ name: Publicacion de version
 
 on:
   push:
-    tags: ['v*.*.*']
+    # Solo versiones liberadas. Un tag de candidato como v0.2.0-rc.1 identifica una baseline de
+    # desarrollo, no una entrega: no debe producir un release ni publicar una imagen. El patron
+    # exige que el ref termine en el numero de parche, de modo que cualquier sufijo de
+    # pre-release queda fuera.
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
 
 concurrency:
   group: release-${{ github.ref }}
@@ -18,7 +22,6 @@ jobs:
     timeout-minutes: 20
     outputs:
       version: ${{ steps.version.outputs.version }}
-      prerelease: ${{ steps.version.outputs.prerelease }}
     steps:
       - name: Checkout del codigo
         uses: actions/checkout@v5
@@ -32,9 +35,8 @@ jobs:
           tag="${GITHUB_REF#refs/tags/}"
           version="${tag#v}"
 
-          if ! printf '%s' "$version" \
-            | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$'; then
-            echo "El tag $tag no sigue el formato SemVer vX.Y.Z o vX.Y.Z-prerelease."
+          if ! printf '%s' "$version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "El tag $tag no sigue el formato SemVer vX.Y.Z."
             exit 1
           fi
 
@@ -46,14 +48,8 @@ jobs:
             exit 1
           fi
 
-          case "$version" in
-            *-*) prerelease=true ;;
-            *) prerelease=false ;;
-          esac
-
           echo "version=$version" >> "$GITHUB_OUTPUT"
-          echo "prerelease=$prerelease" >> "$GITHUB_OUTPUT"
-          echo "Version $version verificada. Pre-release: $prerelease."
+          echo "Version $version verificada."
 
       - name: Configurar Node.js
         uses: actions/setup-node@v6

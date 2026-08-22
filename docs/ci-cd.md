@@ -268,7 +268,18 @@ inmediata y fallar al primer intento reportaría una condición transitoria como
 
 ### Publicación de versión por tag
 
-Se dispara con cualquier tag `v*.*.*` y encadena tres jobs, con el de verificación como puerta.
+Se dispara con tags de versión liberada y encadena tres jobs, con el de verificación como puerta.
+
+El filtro es `v[0-9]+.[0-9]+.[0-9]+`, no `v*.*.*`, y la diferencia no es cosmética. El primer patrón
+que se escribió era el segundo, y al etiquetar la baseline de desarrollo `v0.2.0-rc.1` el workflow
+se disparó y falló: comparó `0.2.0-rc.1` contra el `0.2.0` de `package.json` y las declaró
+discrepantes. La comprobación hizo su trabajo; el defecto estaba en el disparador.
+
+Un tag de candidato identifica una **baseline de desarrollo**, no una entrega. No debe producir un
+release ni publicar una imagen, porque nada de eso se libera al cliente. El patrón exige ahora que
+el ref termine en el número de parche, con lo que cualquier sufijo de pre-release queda fuera. La
+ejecución fallida se conserva en el historial de Actions como evidencia del defecto y su
+corrección.
 
 | Job         | Responsabilidad                                                        |
 | ----------- | ---------------------------------------------------------------------- |
