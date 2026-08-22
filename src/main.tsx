@@ -2,8 +2,11 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import { App } from '@/app/App';
+import { restoreRedirectedRoute } from '@/app/spaRedirect';
 
 import './index.css';
+
+restoreRedirectedRoute();
 
 const container = document.getElementById('root');
 

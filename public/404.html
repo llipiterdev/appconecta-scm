@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AppConecta — Redirigiendo</title>
+    <script>
+      // GitHub Pages no conoce las rutas del enrutador del cliente y responde 404 ante una
+      // recarga directa. Este documento reenvia la ruta solicitada al index de la aplicacion,
+      // que la resuelve del lado del cliente.
+      (function redirectToApplicationRoot() {
+        var base = window.location.pathname.split('/').slice(0, 2).join('/') + '/';
+        var target = window.location.pathname.slice(base.length);
+        window.location.replace(
+          base + '?redirect=' + encodeURIComponent(target + window.location.search)
+        );
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Redirigiendo al portal del colaborador…</p>
+  </body>
+</html>
