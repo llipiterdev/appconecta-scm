@@ -285,21 +285,31 @@ jobs:
 
       - name: Verificar que la imagen sirve la aplicacion
         run: |
-          docker run --rm -d --name appconecta-ci -p 8080:8080 appconecta-scm:ci-${{ github.sha }}
+          # Sin --rm: si el contenedor termina al arrancar, sus logs deben sobrevivir para poder
+          # diagnosticar la causa. Un contenedor eliminado se lleva consigo la unica evidencia.
+          docker run -d --name appconecta-ci -p 8080:8080 appconecta-scm:ci-${{ github.sha }}
+
+          verificar() {
+            # La ruta profunda comprueba que el fallback de la SPA funciona: sin el, cualquier
+            # enlace directo a una seccion devolveria 404 desde el servidor.
+            curl --fail --silent --show-error http://127.0.0.1:8080/ > /dev/null &&
+              curl --fail --silent --show-error http://127.0.0.1:8080/incapacidades > /dev/null
+          }
 
           for attempt in $(seq 1 12); do
-            if curl --fail --silent --show-error http://127.0.0.1:8080/ > /dev/null; then
-              echo "La imagen responde correctamente en el intento $attempt."
-              docker stop appconecta-ci
+            if verificar; then
+              echo "La imagen responde en la raiz y en una ruta profunda (intento $attempt)."
+              docker rm -f appconecta-ci > /dev/null
               exit 0
             fi
             echo "Intento $attempt sin respuesta; reintentando en 5 s."
             sleep 5
           done
 
-          echo "La imagen no respondio tras 12 intentos."
-          docker logs appconecta-ci
-          docker stop appconecta-ci
+          echo "La imagen no respondio tras 12 intentos. Logs del contenedor:"
+          docker logs appconecta-ci || true
+          docker inspect --format 'Estado: {{.State.Status}} (codigo de salida {{.State.ExitCode}})' appconecta-ci || true
+          docker rm -f appconecta-ci > /dev/null || true
           exit 1
 
       - name: Resumen de la imagen
