@@ -25,24 +25,24 @@ graph LR
 
 ## 1. Requisitos funcionales
 
-| Requisito                                    | Issue | CI implementados                                  | Rama                     | Prueba que lo verifica                        | Versión |
-| -------------------------------------------- | ----- | ------------------------------------------------- | ------------------------ | --------------------------------------------- | ------- |
-| RF-01 Dashboard del colaborador              | #2    | CI-APP-PAGE-001, CI-APP-SVC-001                   | `feature/legacy-modules` | `src/pages/DashboardPage.test.tsx`            | v0.1.0  |
-| RF-02 Perfil ficticio del colaborador        | #2    | CI-APP-PAGE-001                                   | `feature/legacy-modules` | Cubierto por `src/app/routes.test.tsx`        | v0.1.0  |
-| RF-03 Noticias y anuncios corporativos       | #2    | CI-APP-PAGE-001, CI-APP-SVC-002                   | `feature/legacy-modules` | Cubierto por `src/app/routes.test.tsx`        | v0.1.0  |
-| RF-04 Consulta de documentos laborales       | #2    | CI-APP-PAGE-001, CI-APP-SVC-001                   | `feature/legacy-modules` | `src/pages/DocumentsPage.test.tsx`            | v0.1.0  |
-| RF-05 Consulta de desprendibles de nómina    | #2    | CI-APP-PAGE-001, CI-APP-SVC-001                   | `feature/legacy-modules` | `src/pages/PayrollPage.test.tsx`              | v0.1.0  |
-| RF-06 Creación de solicitudes de RRHH        | #2    | CI-APP-PAGE-001, CI-APP-SVC-001, CI-APP-STORE-001 | `feature/legacy-modules` | `src/pages/RequestsPage.test.tsx`             | v0.1.0  |
-| RF-07 Registro de incapacidades              | #2    | CI-APP-PAGE-001, CI-APP-SVC-001, CI-APP-STORE-001 | `feature/legacy-modules` | `src/pages/MedicalLeavesPage.test.tsx`        | v0.1.0  |
-| RF-08 Consulta del estado de solicitudes     | #2    | CI-APP-PAGE-001, CI-APP-SVC-001                   | `feature/legacy-modules` | `src/pages/RequestStatusPage.test.tsx`        | v0.1.0  |
-| RF-09 Navegación responsive                  | #1    | CI-APP-UI-002                                     | `feature/app-shell`      | `src/components/layout/AppShell.test.tsx`     | v0.1.0  |
-| RF-10 Estados de carga                       | #1    | CI-APP-UI-003, CI-APP-HOOK-001                    | `feature/app-shell`      | `src/components/feedback/states.test.tsx`     | v0.1.0  |
-| RF-11 Estados vacíos                         | #1    | CI-APP-UI-003                                     | `feature/app-shell`      | `src/components/feedback/states.test.tsx`     | v0.1.0  |
-| RF-12 Manejo de errores                      | #1    | CI-APP-UI-003, CI-APP-HOOK-001                    | `feature/app-shell`      | `src/components/feedback/states.test.tsx`     | v0.1.0  |
-| RF-13 Datos realistas pero ficticios         | #2    | CI-APP-SVC-002                                    | `feature/legacy-modules` | `src/services/legacyEmployeeService.test.ts`  | v0.1.0  |
-| RF-14 Accesibilidad básica                   | #1    | CI-APP-UI-001, CI-APP-UI-002                      | `feature/app-shell`      | Aserciones de rol y etiqueta en toda la suite | v0.1.0  |
-| RF-15 Experiencia coherente móvil/escritorio | #1    | CI-APP-UI-002                                     | `feature/app-shell`      | `src/components/layout/AppShell.test.tsx`     | v0.1.0  |
-| RF-16 Carné virtual con QR                   | #5    | _pendiente_                                       | `feature/virtual-card`   | _pendiente_                                   | v0.2.0  |
+| Requisito                                    | Issue | CI implementados                                  | Rama                     | Prueba que lo verifica                                                          | Versión |
+| -------------------------------------------- | ----- | ------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------- | ------- |
+| RF-01 Dashboard del colaborador              | #2    | CI-APP-PAGE-001, CI-APP-SVC-001                   | `feature/legacy-modules` | `src/pages/DashboardPage.test.tsx`                                              | v0.1.0  |
+| RF-02 Perfil ficticio del colaborador        | #2    | CI-APP-PAGE-001                                   | `feature/legacy-modules` | Cubierto por `src/app/routes.test.tsx`                                          | v0.1.0  |
+| RF-03 Noticias y anuncios corporativos       | #2    | CI-APP-PAGE-001, CI-APP-SVC-002                   | `feature/legacy-modules` | Cubierto por `src/app/routes.test.tsx`                                          | v0.1.0  |
+| RF-04 Consulta de documentos laborales       | #2    | CI-APP-PAGE-001, CI-APP-SVC-001                   | `feature/legacy-modules` | `src/pages/DocumentsPage.test.tsx`                                              | v0.1.0  |
+| RF-05 Consulta de desprendibles de nómina    | #2    | CI-APP-PAGE-001, CI-APP-SVC-001                   | `feature/legacy-modules` | `src/pages/PayrollPage.test.tsx`                                                | v0.1.0  |
+| RF-06 Creación de solicitudes de RRHH        | #2    | CI-APP-PAGE-001, CI-APP-SVC-001, CI-APP-STORE-001 | `feature/legacy-modules` | `src/pages/RequestsPage.test.tsx`                                               | v0.1.0  |
+| RF-07 Registro de incapacidades              | #2    | CI-APP-PAGE-001, CI-APP-SVC-001, CI-APP-STORE-001 | `feature/legacy-modules` | `src/pages/MedicalLeavesPage.test.tsx`                                          | v0.1.0  |
+| RF-08 Consulta del estado de solicitudes     | #2    | CI-APP-PAGE-001, CI-APP-SVC-001                   | `feature/legacy-modules` | `src/pages/RequestStatusPage.test.tsx`                                          | v0.1.0  |
+| RF-09 Navegación responsive                  | #1    | CI-APP-UI-002                                     | `feature/app-shell`      | `src/components/layout/AppShell.test.tsx`                                       | v0.1.0  |
+| RF-10 Estados de carga                       | #1    | CI-APP-UI-003, CI-APP-HOOK-001                    | `feature/app-shell`      | `src/components/feedback/states.test.tsx`                                       | v0.1.0  |
+| RF-11 Estados vacíos                         | #1    | CI-APP-UI-003                                     | `feature/app-shell`      | `src/components/feedback/states.test.tsx`                                       | v0.1.0  |
+| RF-12 Manejo de errores                      | #1    | CI-APP-UI-003, CI-APP-HOOK-001                    | `feature/app-shell`      | `src/components/feedback/states.test.tsx`                                       | v0.1.0  |
+| RF-13 Datos realistas pero ficticios         | #2    | CI-APP-SVC-002                                    | `feature/legacy-modules` | `src/services/legacyEmployeeService.test.ts`                                    | v0.1.0  |
+| RF-14 Accesibilidad básica                   | #1    | CI-APP-UI-001, CI-APP-UI-002                      | `feature/app-shell`      | Aserciones de rol y etiqueta en toda la suite                                   | v0.1.0  |
+| RF-15 Experiencia coherente móvil/escritorio | #1    | CI-APP-UI-002                                     | `feature/app-shell`      | `src/components/layout/AppShell.test.tsx`                                       | v0.1.0  |
+| RF-16 Carné virtual con QR                   | #5    | CI-APP-SVC-003, CI-APP-UI-004                     | `feature/virtual-card`   | `src/services/virtualCardService.test.ts`, `src/pages/VirtualCardPage.test.tsx` | v0.2.0  |
 
 Las funcionalidades RF-02 y RF-03 se verifican únicamente a través de las pruebas de enrutamiento.
 Esa cobertura parcial no es un descuido sino la materialización deliberada de **TD-006**, y por
@@ -82,24 +82,38 @@ Diez de los requisitos anteriores cuentan además con verificación end-to-end e
 
 ## 3. Trazabilidad de las integraciones realizadas
 
-| Issue  | Rama                        | Commits (en orden)                                                          | Pull request                                                 | Merge commit | Checks      | Versión |
-| ------ | --------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------ | ------------ | ----------- | ------- |
-| #1     | `feature/scm-bootstrap`     | `59b3f1a`, `0cb47f6`, `eb93ce1`, `33511c8`, `e0313d1`                       | [#10](https://github.com/llipiterdev/appconecta-scm/pull/10) | `7e62962`    | 4 en verde  | v0.1.0  |
-| #1     | `feature/app-shell`         | `0d3b239`, `c1be172`, `11dec1c`, `8fc3b90`, `de5aef6`                       | [#11](https://github.com/llipiterdev/appconecta-scm/pull/11) | `c7d7609`    | 4 en verde  | v0.1.0  |
-| #2, #9 | `feature/legacy-modules`    | `8248fec`, `ab74b6a`, `53e2301`, `a4d6a28`, `ebb41c9`                       | [#12](https://github.com/llipiterdev/appconecta-scm/pull/12) | `207fcd3`    | 4 en verde  | v0.1.0  |
-| #3     | `feature/scm-governance`    | `d5201b3`, `7399e59`, `4cc5739`, `fa9bfa4`, `e0fdccf`, `8dcade5`, `d1f2fee` | [#13](https://github.com/llipiterdev/appconecta-scm/pull/13) | `a2b8394`    | 4 en verde  | v0.1.0  |
-| #4     | `feature/ci-pipeline`       | `2af5b91`, `83f9ba9`, `9f7b0f0`, `831d286`, `c2de2c3`, `b9a9aa9`            | [#14](https://github.com/llipiterdev/appconecta-scm/pull/14) | `8719d68`    | 7 en verde  | v0.1.0  |
-| #7     | `release/0.1.0` → `main`    | `1a5f6cc`, `dcd04a9`, `5042a93`                                             | [#15](https://github.com/llipiterdev/appconecta-scm/pull/15) | `878c94b`    | 7 en verde  | v0.1.0  |
-| #7     | `release/0.1.0` → `develop` | reintegración de los tres commits anteriores                                | [#22](https://github.com/llipiterdev/appconecta-scm/pull/22) | `6c8bbc5`    | 7 en verde  | v0.1.0  |
-| #5     | `feature/virtual-card`      | _pendiente_                                                                 | _pendiente_                                                  | _pendiente_  | _pendiente_ | v0.2.0  |
-| #6     | `feature/cd-automation`     | _pendiente_                                                                 | _pendiente_                                                  | _pendiente_  | _pendiente_ | v0.2.0  |
-| #8     | `release/0.2.0`             | _pendiente_                                                                 | _pendiente_                                                  | _pendiente_  | _pendiente_ | v0.2.0  |
+| Issue  | Rama                              | Commits (en orden)                                                          | Pull request                                                 | Merge commit | Checks     | Versión |
+| ------ | --------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------ | ------------ | ---------- | ------- |
+| #1     | `feature/scm-bootstrap`           | `59b3f1a`, `0cb47f6`, `eb93ce1`, `33511c8`, `e0313d1`                       | [#10](https://github.com/llipiterdev/appconecta-scm/pull/10) | `7e62962`    | 4 en verde | v0.1.0  |
+| #1     | `feature/app-shell`               | `0d3b239`, `c1be172`, `11dec1c`, `8fc3b90`, `de5aef6`                       | [#11](https://github.com/llipiterdev/appconecta-scm/pull/11) | `c7d7609`    | 4 en verde | v0.1.0  |
+| #2, #9 | `feature/legacy-modules`          | `8248fec`, `ab74b6a`, `53e2301`, `a4d6a28`, `ebb41c9`                       | [#12](https://github.com/llipiterdev/appconecta-scm/pull/12) | `207fcd3`    | 4 en verde | v0.1.0  |
+| #3     | `feature/scm-governance`          | `d5201b3`, `7399e59`, `4cc5739`, `fa9bfa4`, `e0fdccf`, `8dcade5`, `d1f2fee` | [#13](https://github.com/llipiterdev/appconecta-scm/pull/13) | `a2b8394`    | 4 en verde | v0.1.0  |
+| #4     | `feature/ci-pipeline`             | `2af5b91`, `83f9ba9`, `9f7b0f0`, `831d286`, `c2de2c3`, `b9a9aa9`            | [#14](https://github.com/llipiterdev/appconecta-scm/pull/14) | `8719d68`    | 7 en verde | v0.1.0  |
+| #7     | `release/0.1.0` → `main`          | `1a5f6cc`, `dcd04a9`, `5042a93`                                             | [#15](https://github.com/llipiterdev/appconecta-scm/pull/15) | `878c94b`    | 7 en verde | v0.1.0  |
+| #7     | `release/0.1.0` → `develop`       | reintegración de los tres commits anteriores                                | [#22](https://github.com/llipiterdev/appconecta-scm/pull/22) | `6c8bbc5`    | 7 en verde | v0.1.0  |
+| #5     | `feature/virtual-card`            | `51a4c7a`, `660c8fc`, `7f5e959`, `4e0008b`                                  | [#24](https://github.com/llipiterdev/appconecta-scm/pull/24) | `b6874ed`    | 7 en verde | v0.2.0  |
+| #6     | `feature/cd-automation`           | `764ca83`, `9574022`, `0bf54af`                                             | [#25](https://github.com/llipiterdev/appconecta-scm/pull/25) | `bf1e678`    | 7 en verde | v0.2.0  |
+| #8     | `release/0.2.0` → `main`          | `7c52129`, `9bec605`, `b7cf1da`, `4f15dcf`                                  | [#26](https://github.com/llipiterdev/appconecta-scm/pull/26) | `0595748`    | 7 en verde | v0.2.0  |
+| #8     | `chore/backmerge-0.2.0`           | `5fea5dc`, `482965d`, `b6c08da`                                             | [#28](https://github.com/llipiterdev/appconecta-scm/pull/28) | `762144a`    | 7 en verde | v0.2.0  |
+| #6     | `hotfix/release-workflow-metrics` | `c5bacba`                                                                   | [#27](https://github.com/llipiterdev/appconecta-scm/pull/27) | `57203ca`    | 7 en verde | v0.2.0  |
 
 El número de checks cambia entre filas y el cambio es real, no un descuido de la tabla. Los tres
 primeros pull requests se validaron con cuatro checks obligatorios: mensajes de commit, calidad
 estática, pruebas y build. Al integrarse `feature/ci-pipeline`, el pipeline incorporó las pruebas
 de extremo a extremo, las métricas con control de no regresión y la construcción del contenedor, y
 los rulesets de `main` y `develop` pasaron a exigir los siete.
+
+**Una discrepancia entre esta tabla y los mensajes de commit.** Los commits de la entrega v0.2.0
+referencian `#9` cuando la issue correspondiente es la `#8`, «Preparación de la versión v0.2.0».
+La `#9` es la deuda reservada para la Actividad 4 y permanece abierta por ese motivo, no porque
+estos cambios la afecten. La tabla registra la issue correcta; los mensajes de commit conservan la
+referencia equivocada porque corregirlos exigiría reescribir historia publicada, que este proyecto
+prohíbe sin excepciones. Se deja constancia aquí en lugar de disimularlo.
+
+El `hotfix/*` es el único del proyecto y responde a un defecto real, no simulado: el
+workflow de publicación de v0.2.0 falló porque ejecutaba el control de no regresión sin haber
+generado antes las mediciones, dejando el release sin artefactos. Se corrigió y la publicación se
+repitió sobre el mismo tag, sin moverlo.
 
 ## 4. Trazabilidad del control de cambios
 
@@ -141,20 +155,25 @@ se contrae, no cuando alguien la descubre después.
 | `BL-DES-001`  | `a2b8394`         | Arquitectura y decisiones      | `docs/baselines.md` | Establecida |
 | `BL-DEV-001`  | `v0.1.0-rc.1`     | Código candidato a v0.1.0      | `docs/baselines.md` | Establecida |
 | `BL-PROD-001` | `v0.1.0`          | Primera entrega                | `docs/baselines.md` | Establecida |
-| `BL-DEV-002`  | `v0.2.0-rc.1`     | Código candidato a v0.2.0      | `docs/baselines.md` | Pendiente   |
-| `BL-PROD-002` | `v0.2.0`          | Segunda entrega                | `docs/baselines.md` | Pendiente   |
+| `BL-DEV-002`  | `v0.2.0-rc.1`     | Código candidato a v0.2.0      | `docs/baselines.md` | Establecida |
+| `BL-PROD-002` | `v0.2.0`          | Segunda entrega                | `docs/baselines.md` | Establecida |
 
 ## 7. Cobertura de la trazabilidad
 
 | Dimensión                                        | Cobertura actual |
 | ------------------------------------------------ | ---------------- |
 | Requisitos funcionales con issue asociada        | 16 de 16         |
-| Requisitos funcionales implementados             | 15 de 16         |
-| Requisitos implementados con prueba automatizada | 15 de 15         |
-| Cambios integrados mediante pull request         | 3 de 3           |
-| Cambios integrados con checks en verde           | 3 de 3           |
+| Requisitos funcionales implementados             | 16 de 16         |
+| Requisitos implementados con prueba automatizada | 16 de 16         |
+| Cambios integrados mediante pull request         | 11 de 11         |
+| Cambios integrados con checks en verde           | 11 de 11         |
+| Baselines establecidas                           | 6 de 6           |
 | Deudas registradas con métrica medida            | 9 de 9           |
 | Configuration Items con propietario asignado     | 66 de 66         |
+
+RF-16, el carné virtual, era el único requisito sin implementar al cerrar v0.1.0. Con su entrega en
+v0.2.0 la trazabilidad queda completa: los dieciséis requisitos tienen issue, implementación y
+prueba automatizada, y los once cambios integrados pasaron por pull request con checks en verde.
 
 ## Mantenimiento de esta matriz
 

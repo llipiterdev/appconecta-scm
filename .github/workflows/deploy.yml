@@ -61,6 +61,13 @@ jobs:
           }
           echo "Fallback de rutas presente."
 
+      # La presentacion final es una pagina estatica independiente, sin build ni dependencias.
+      # Se copia tal cual dentro del artefacto, en una ruta propia que no interfiere con la SPA.
+      - name: Incluir la presentacion final
+        run: |
+          mkdir -p dist/presentacion
+          cp -r presentacion/. dist/presentacion/
+
       - name: Registrar la procedencia del artefacto
         run: |
           version=$(node -p "require('./package.json').version")

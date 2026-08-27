@@ -83,7 +83,7 @@ cambiarse:
 | Identificador | Tag           | Origen          | Propósito                                                                     | Estado      |
 | ------------- | ------------- | --------------- | ----------------------------------------------------------------------------- | ----------- |
 | `BL-DEV-001`  | `v0.1.0-rc.1` | `release/0.1.0` | Congelar el código candidato antes de la aprobación de la primera entrega     | Establecida |
-| `BL-DEV-002`  | `v0.2.0-rc.1` | `release/0.2.0` | Congelar el código candidato con el carné virtual antes de la segunda entrega | Pendiente   |
+| `BL-DEV-002`  | `v0.2.0-rc.1` | `release/0.2.0` | Congelar el código candidato con el carné virtual antes de la segunda entrega | Establecida |
 
 Estas baselines aportan algo que el commit de la rama de release no aporta por sí solo: un punto
 de recuperación con nombre. Si la validación final de una entrega falla, la corrección parte de un
@@ -98,7 +98,7 @@ Las ramas `release/*` **no se eliminan** hasta que la evidencia de la entrega es
 | Identificador | Tag      | Contenido funcional                                                         | Artefactos asociados                                                | Estado      |
 | ------------- | -------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------- | ----------- |
 | `BL-PROD-001` | `v0.1.0` | Ocho módulos del portal, deuda TD-001 a TD-009 medida, pipeline CI completo | GitHub Release, artefacto `dist/`, imagen de contenedor             | Establecida |
-| `BL-PROD-002` | `v0.2.0` | Carné virtual QR, modelo SCM implementado, CI/CD funcional                  | GitHub Release, `dist/`, imagen en GHCR, despliegue en GitHub Pages | Pendiente   |
+| `BL-PROD-002` | `v0.2.0` | Carné virtual QR, modelo SCM implementado, CI/CD funcional                  | GitHub Release, `dist/`, imagen en GHCR, despliegue en GitHub Pages | Establecida |
 
 Una baseline productiva se considera establecida únicamente cuando **todos** sus artefactos
 existen y son verificables. Un tag sin release, o un release sin despliegue verificado, es una
@@ -119,9 +119,32 @@ La imagen todavía no se publica en un registro. `BL-PROD-001` es por tanto una 
 **completa para su alcance**: la publicación en GHCR y el despliegue pertenecen al pipeline de
 entrega, que forma parte de la siguiente versión. Declararla desplegada hoy sería falso.
 
-`BL-PROD-001` es además la **baseline de mantenimiento**: el estado medido contra el cual la
-Actividad 4 comparará el efecto de la refactorización. Sus métricas viven en
-`docs/technical-debt-register.md` y su matriz antes/después en `docs/maintenance-baseline.md`.
+Artefactos verificados de `BL-PROD-002`:
+
+| Artefacto            | Identificación                                                                                   |
+| -------------------- | ------------------------------------------------------------------------------------------------ |
+| Merge commit         | `0595748` en `main`, procedente del PR #26                                                       |
+| Tag anotado          | `v0.2.0`, con las métricas medidas en el propio mensaje del tag                                  |
+| GitHub Release       | [v0.2.0](https://github.com/llipiterdev/appconecta-scm/releases/tag/v0.2.0)                      |
+| Artefacto de build   | `appconecta-v0.2.0-dist.tar.gz`, 612 637 bytes, adjunto al release                               |
+| Suma de verificación | `appconecta-v0.2.0-dist.tar.gz.sha256`, generada por el pipeline y adjunta junto al artefacto    |
+| Imagen de contenedor | `ghcr.io/llipiterdev/appconecta-scm`, etiquetas `0.2.0`, `0.2`, `latest` y `sha-0595748…`        |
+| Digest de la imagen  | `sha256:c7dd553c6476ce48f7c09d97bd1ed3399373e2202912a6f7fe6d08b7fa449615`                        |
+| Despliegue           | <https://llipiterdev.github.io/appconecta-scm/>, verificado por smoke test en el propio workflow |
+
+`BL-PROD-002` es la **primera baseline completa** del proyecto: es la primera que reúne los seis
+artefactos, incluidos la imagen publicada en un registro y el despliegue verificado, que en v0.1.0
+no existían.
+
+Su establecimiento no fue inmediato. La primera ejecución del workflow de publicación falló y el
+release quedó creado sin artefactos, de modo que la baseline permaneció **incompleta** durante ese
+intervalo y así se declaró. Se completó tras el hotfix del PR #27, repitiendo la publicación sobre
+el mismo tag **sin moverlo**: un tag que se mueve deja de identificar una baseline, que es lo único
+que un tag aporta.
+
+`BL-PROD-001` sigue siendo la **baseline de mantenimiento** de referencia para los indicadores del
+módulo legacy, que no variaron entre ambas versiones. Los indicadores de proyecto que sí variaron
+se comparan contra `BL-PROD-002`. El detalle está en `docs/maintenance-baseline.md`.
 
 ---
 
@@ -163,14 +186,20 @@ la propiedad que justifica la existencia de las baselines.
 
 ## Registro de establecimiento
 
-| Baseline      | Fecha de establecimiento | Identificador Git | Aprobación            | Evidencia                 |
-| ------------- | ------------------------ | ----------------- | --------------------- | ------------------------- |
-| `BL-FUNC-001` | 21 de agosto de 2026     | `114e7b2`         | Definición de alcance | Commit inicial en `main`  |
-| `BL-DES-001`  | 22 de agosto de 2026     | `a2b8394`         | PR #13 a `develop`    | Merge commit en `develop` |
-| `BL-DEV-001`  | 22 de agosto de 2026     | `1a5f6cc`         | Pipeline completo     | Tag anotado `v0.1.0-rc.1` |
-| `BL-PROD-001` | 22 de agosto de 2026     | `878c94b`         | PR #15 a `main`       | Tag `v0.1.0` y release    |
-| `BL-DEV-002`  | _pendiente_              | `v0.2.0-rc.1`     | Pipeline completo     | _pendiente_               |
-| `BL-PROD-002` | _pendiente_              | `v0.2.0`          | PR a `main` + release | _pendiente_               |
+| Baseline      | Fecha de establecimiento | Identificador Git | Aprobación            | Evidencia                                                                    |
+| ------------- | ------------------------ | ----------------- | --------------------- | ---------------------------------------------------------------------------- |
+| `BL-FUNC-001` | 21 de agosto de 2026     | `114e7b2`         | Definición de alcance | Commit inicial en `main`                                                     |
+| `BL-DES-001`  | 22 de agosto de 2026     | `a2b8394`         | PR #13 a `develop`    | Merge commit en `develop`                                                    |
+| `BL-DEV-001`  | 22 de agosto de 2026     | `1a5f6cc`         | Pipeline completo     | Tag anotado `v0.1.0-rc.1`                                                    |
+| `BL-PROD-001` | 22 de agosto de 2026     | `878c94b`         | PR #15 a `main`       | Tag `v0.1.0` y release                                                       |
+| `BL-DEV-002`  | 22 de agosto de 2026     | `b7cf1da`         | Pipeline completo     | Tag anotado `v0.2.0-rc.1`                                                    |
+| `BL-PROD-002` | 22 de agosto de 2026     | `0595748`         | PR #26 a `main`       | Tag `v0.2.0`, release con artefactos, imagen en GHCR y despliegue verificado |
 
-Las filas pendientes se completan **cuando el identificador existe**, no antes. Anticipar un SHA
-o una fecha sería fabricar evidencia.
+Las filas se completaron **cuando el identificador existió**, no antes. Anticipar un SHA o una fecha
+sería fabricar evidencia.
+
+Las seis baselines están establecidas. Una observación sobre `BL-DEV-002` que conviene registrar:
+etiquetarla disparó por error el workflow de publicación, que interpretó un candidato como una
+versión liberada. El defecto se corrigió en la propia rama de entrega, restringiendo el disparador
+a los tags de versión. Una baseline de desarrollo identifica un punto de recuperación, no un
+entregable, y la automatización debe distinguirlo.
