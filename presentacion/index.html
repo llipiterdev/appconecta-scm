@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>AppConecta — Presentación final</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      :root {
+        --navy: #1d4f8c;
+        --navy-dark: #123157;
+        --amber: #d97706;
+        --green: #16a34a;
+        --gray: #64748b;
+        --ink: #0f172a;
+        --line: #e2e8f0;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: 'Segoe UI', Calibri, sans-serif;
+        color: var(--ink);
+        background: #f1f5f9;
+      }
+      .slide {
+        max-width: 960px;
+        margin: 0 auto 24px;
+        background: #fff;
+        border-radius: 14px;
+        padding: 36px 48px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      }
+      .slide.dark {
+        background: var(--navy-dark);
+        color: #fff;
+        text-align: center;
+        padding: 60px 48px;
+      }
+      .kicker {
+        color: var(--amber);
+        font-size: 13px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 6px;
+      }
+      h1 {
+        font-size: 34px;
+        margin: 0 0 8px;
+      }
+      h2 {
+        font-size: 26px;
+        margin: 0 0 14px;
+      }
+      h3 {
+        font-weight: 400;
+        color: #cbd5e1;
+        margin: 0;
+      }
+      .subtitle {
+        color: var(--gray);
+        font-size: 15px;
+        margin: 0 0 18px;
+      }
+      .grid {
+        display: grid;
+        gap: 14px;
+      }
+      .cols-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+      .cols-4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .card {
+        background: #f8fafc;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 14px 16px;
+      }
+      .card strong {
+        color: var(--amber);
+        display: block;
+        margin-bottom: 4px;
+        font-size: 15px;
+      }
+      .card p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.45;
+      }
+      ul {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 14px;
+        line-height: 1.55;
+      }
+      li {
+        margin-bottom: 4px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        margin-top: 6px;
+      }
+      th {
+        text-align: left;
+        color: var(--gray);
+        border-bottom: 1px solid var(--line);
+        padding: 6px 8px;
+      }
+      td {
+        padding: 6px 8px;
+        border-bottom: 1px solid #f1f5f9;
+      }
+      td.good {
+        color: var(--green);
+        font-weight: 700;
+      }
+      .pipe {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        margin: 14px 0;
+      }
+      .pipe .step {
+        flex: 1 1 100px;
+        background: var(--navy);
+        color: #fff;
+        border-radius: 8px;
+        padding: 10px 6px;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .pipe .step.highlight {
+        background: var(--amber);
+      }
+      .pipe .arrow {
+        color: var(--amber);
+        font-weight: 700;
+      }
+      .pill {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #fff;
+      }
+      .pill.ready {
+        background: var(--green);
+      }
+      .pill.pending {
+        background: var(--amber);
+      }
+      .stat {
+        text-align: center;
+      }
+      .stat .num {
+        font-size: 32px;
+        font-weight: 800;
+        color: var(--amber);
+      }
+      .stat .label {
+        font-size: 12px;
+        color: var(--gray);
+      }
+      .shot {
+        max-width: 100%;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+      }
+      .caption {
+        font-size: 12px;
+        color: var(--gray);
+        text-align: center;
+        margin-top: 6px;
+      }
+      .note {
+        font-size: 13px;
+        color: var(--gray);
+        font-style: italic;
+        margin-top: 12px;
+      }
+
+      .term {
+        border-bottom: 1px dotted var(--amber);
+        cursor: help;
+        position: relative;
+      }
+      .term::after {
+        content: attr(data-tip);
+        position: absolute;
+        left: 0;
+        top: 100%;
+        z-index: 5;
+        margin-top: 4px;
+        width: 240px;
+        background: #0b1220;
+        color: #e2e8f0;
+        border: 1px solid var(--amber);
+        border-radius: 8px;
+        padding: 8px 10px;
+        font-size: 12px;
+        line-height: 1.35;
+        font-weight: 400;
+        opacity: 0;
+        visibility: hidden;
+      }
+      .term:hover::after,
+      .term:focus::after {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .toc {
+        font-size: 13px;
+        color: var(--gray);
+        text-align: center;
+        margin: 0 auto 24px;
+        max-width: 960px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slide dark">
+      <h1>AppConecta</h1>
+      <h3>Control de versiones, gestión de configuración y DevOps</h3>
+      <p style="margin-top: 20px; font-size: 14px">
+        Miguel Santiago Acevedo Virgues · Julian Camilo Corredor Rojas · Brayan Estif Calderon Gomez
+      </p>
+      <p style="color: #94a3b8; font-size: 12px">
+        Gestión de Configuración y Mantenimiento de Software — Docente: Cesar Augusto Vega Fernandez
+      </p>
+      <p style="color: #64748b; font-size: 11px; margin-top: 24px">
+        Simulación académica · datos y colaboradores ficticios
+      </p>
+    </div>
+
+    <div class="toc">Desplázate hacia abajo para recorrer toda la presentación ↓</div>
+
+    <!-- El sistema -->
+    <div class="slide">
+      <span class="kicker">El sistema</span>
+      <h2>AppConecta en cuatro frases</h2>
+      <div class="grid cols-2">
+        <div class="card">
+          <strong>Qué encontramos</strong>
+          <p>
+            Portal del colaborador con un módulo legacy que concentra la mayor parte del riesgo de
+            mantenimiento.
+          </p>
+        </div>
+        <div class="card">
+          <strong>Qué decidimos</strong>
+          <p>
+            <span
+              class="term"
+              data-tip="Estrategia de ramas: 'main' y 'develop' fijas, y ramas cortas (feature/fix) para cada cambio."
+              >GitFlow</span
+            >
+            liviano,
+            <span
+              class="term"
+              data-tip="Formato estándar para los mensajes de commit (feat, fix, docs...) que permite automatizar versiones y changelog."
+              >Conventional Commits</span
+            >,
+            <span
+              class="term"
+              data-tip="Versionado MAJOR.MINOR.PATCH (ej. 0.2.0): cada número indica el tipo de cambio."
+              >SemVer</span
+            >
+            y un
+            <span
+              class="term"
+              data-tip="Serie de pasos automáticos (compilar, probar, desplegar) que corre en cada cambio del repositorio."
+              >pipeline</span
+            >
+            sin secretos externos.
+          </p>
+        </div>
+        <div class="card">
+          <strong>Qué implementamos</strong>
+          <p>
+            <span
+              class="term"
+              data-tip="Progressive Web App: una app web que se puede instalar y usar como app nativa en el celular."
+              >PWA</span
+            >
+            con 9 secciones, pipeline de 7 verificaciones, despliegue en
+            <span
+              class="term"
+              data-tip="Servicio gratuito de GitHub para publicar sitios web estáticos directamente desde el repositorio."
+              >Pages</span
+            >
+            e imagen en
+            <span
+              class="term"
+              data-tip="GitHub Container Registry: bodega de GitHub donde se guardan las imágenes de Docker de la app."
+              >GHCR</span
+            >. v0.1.0 y v0.2.0.
+          </p>
+        </div>
+        <div class="card">
+          <strong>Qué evidencia obtuvimos</strong>
+          <p>
+            13 pull requests con checks en verde, 6 baselines establecidas, 94 pruebas
+            automatizadas, app desplegada.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- GitFlow + SemVer -->
+    <div class="slide">
+      <span class="kicker">Control de versiones</span>
+      <h2>
+        <span
+          class="term"
+          data-tip="Estrategia de ramas: 'main' y 'develop' fijas, y ramas cortas (feature/fix) para cada cambio."
+          >GitFlow</span
+        >
+        liviano +
+        <span
+          class="term"
+          data-tip="Versionado MAJOR.MINOR.PATCH (ej. 0.2.0): cada número indica el tipo de cambio."
+          >SemVer</span
+        >
+      </h2>
+      <div style="font-size: 14px">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px">
+          <span style="width: 110px; font-weight: 700">main</span>
+          <div style="flex: 1; height: 3px; background: var(--ink)"></div>
+          <span style="font-size: 12px; color: var(--gray)">v0.1.0 → v0.2.0</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px">
+          <span style="width: 110px; font-weight: 700; color: var(--amber)">develop</span>
+          <div style="flex: 1; height: 3px; background: var(--amber)"></div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <span style="width: 110px; font-weight: 700; color: var(--gray)">feature / fix</span>
+          <div style="flex: 1; height: 2px; border-top: 2px dashed var(--gray)"></div>
+        </div>
+      </div>
+      <ul style="margin-top: 16px">
+        <li>
+          <strong
+            ><span
+              class="term"
+              data-tip="Formato estándar para los mensajes de commit (feat, fix, docs...) que permite automatizar versiones y changelog."
+              >Conventional Commits</span
+            ></strong
+          >
+          — validados por
+          <span
+            class="term"
+            data-tip="Herramienta que revisa automáticamente que el mensaje de cada commit siga el formato acordado."
+            >commitlint</span
+          >
+          en local y en
+          <span
+            class="term"
+            data-tip="Integración Continua: el pipeline que corre pruebas y validaciones cada vez que alguien propone un cambio."
+            >CI</span
+          >.
+        </li>
+        <li>
+          <strong>SemVer</strong> — sin v1.0.0 todavía: el servicio legacy aún va a cambiar en la
+          Actividad 4.
+        </li>
+        <li>
+          <strong
+            >Un
+            <span
+              class="term"
+              data-tip="Corrección urgente sobre una versión ya publicada, saltándose el ciclo normal de desarrollo."
+              >hotfix</span
+            >
+            real</strong
+          >
+          — el workflow de publicación falló al liberar v0.2.0; se corrigió por el mismo camino:
+          rama, PR, checks.
+        </li>
+      </ul>
+    </div>
+
+    <!-- Pipeline -->
+    <div class="slide">
+      <span class="kicker">Demo en vivo</span>
+      <h2>Del cambio en el repositorio al despliegue</h2>
+      <div class="pipe">
+        <div class="step">Commit en<br />feature/*</div>
+        <div class="arrow">➜</div>
+        <div class="step">Pull request<br />hacia develop</div>
+        <div class="arrow">➜</div>
+        <div class="step highlight">7 checks<br />de CI</div>
+        <div class="arrow">➜</div>
+        <div class="step">Merge<br />commit</div>
+        <div class="arrow">➜</div>
+        <div class="step">Tag<br />anotado</div>
+        <div class="arrow">➜</div>
+        <div class="step">Release +<br />GHCR</div>
+        <div class="arrow">➜</div>
+        <div class="step">Despliegue<br />en Pages</div>
+      </div>
+      <p style="font-size: 12px; color: var(--gray); margin: 6px 0 4px">
+        <span
+          class="term"
+          data-tip="Cambio propuesto: pide integrar código de una rama a otra, y dispara las validaciones."
+          >Pull request</span
+        >
+        ·
+        <span
+          class="term"
+          data-tip="Integración Continua: validaciones automáticas (pruebas, calidad, build) en cada cambio."
+          >CI</span
+        >
+        ·
+        <span
+          class="term"
+          data-tip="GitHub Container Registry: bodega de GitHub donde se guardan las imágenes de Docker de la app."
+          >GHCR</span
+        >
+        ·
+        <span
+          class="term"
+          data-tip="Servicio gratuito de GitHub para publicar sitios web estáticos directamente desde el repositorio."
+          >Pages</span
+        >
+      </p>
+      <div class="grid cols-2">
+        <div>
+          <strong style="color: var(--amber); font-size: 14px">Los 7 checks obligatorios</strong>
+          <ul style="margin-top: 6px">
+            <li>Mensajes de commit</li>
+            <li>Calidad estática</li>
+            <li>Pruebas unitarias y de componente</li>
+            <li>Build de producción</li>
+            <li>
+              Pruebas
+              <span
+                class="term"
+                data-tip="Pruebas que simulan a un usuario real navegando la app completa, de principio a fin."
+                >end-to-end</span
+              >
+              (<span
+                class="term"
+                data-tip="Herramienta que abre un navegador real y hace clic, escribe y verifica la pantalla, como lo haría una persona."
+                >Playwright</span
+              >)
+            </li>
+            <li>Métricas y no regresión</li>
+            <li>Imagen de contenedor</li>
+          </ul>
+        </div>
+        <div>
+          <strong style="color: var(--amber); font-size: 14px">Qué mostraremos en vivo</strong>
+          <ul style="margin-top: 6px">
+            <li>Un commit real disparando el pipeline en GitHub Actions</li>
+            <li>Los 7 checks completando en verde en pocos minutos</li>
+            <li>El merge y el tag produciendo un release automático</li>
+            <li>
+              La aplicación desplegada respondiendo tras el
+              <span
+                class="term"
+                data-tip="Prueba rápida después de desplegar: solo confirma que la app responde y carga, no revisa todo a fondo."
+                >smoke test</span
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trade-offs -->
+    <div class="slide">
+      <span class="kicker">Decisiones argumentadas</span>
+      <h2>Trade-offs, no decisiones perfectas</h2>
+      <div class="grid cols-2">
+        <div class="card">
+          <strong>GitFlow vs. trunk-based</strong>
+          <p>
+            Más ramas y ceremonia, pero exige entregas formales y baselines auditables. No es
+            superior en general.
+          </p>
+        </div>
+        <div class="card">
+          <strong>Documentar y medir deuda vs. cero deuda</strong>
+          <p>
+            Priorizamos métricas propias del módulo legacy en vez de bloquear la entrega buscando un
+            ideal sin deuda.
+          </p>
+          <p style="font-size: 11px; color: var(--gray); margin-top: 6px">
+            Ver: <code>docs/technical-debt-register.md</code>
+          </p>
+        </div>
+        <div class="card">
+          <strong>Tolerancias del gate de métricas</strong>
+          <p>
+            Cobertura y duplicación admiten un margen pequeño; complejidad y líneas del legacy,
+            tolerancia cero.
+          </p>
+          <p style="font-size: 11px; color: var(--gray); margin-top: 6px">
+            Ver: <code>metrics-baseline.json</code> y el job <code>metrics:gate</code> en
+            <code>ci.yml</code>
+          </p>
+        </div>
+        <div class="card">
+          <strong>Sin segunda aprobación humana</strong>
+          <p>
+            Una sola identidad ejecuta y aprueba, por alcance académico. El control real es el
+            pipeline, no un revisor.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Deuda técnica -->
+    <div class="slide">
+      <span class="kicker">Baseline para la Actividad 4</span>
+      <h2>Deuda técnica documentada y medida</h2>
+      <p class="subtitle">
+        Durante la construcción del módulo legacy identificamos y priorizamos 9 puntos de deuda
+        técnica, con una baseline medible para intervenir en la Actividad 4.
+      </p>
+      <div class="grid cols-2">
+        <ul>
+          <li>
+            TD-001 / TD-005 — servicio legacy: 580 líneas,
+            <span
+              class="term"
+              data-tip="Mide cuántos caminos distintos puede tomar una función. Más alto = más difícil de entender y probar."
+              >complejidad</span
+            >
+            26 (foco principal)
+          </li>
+          <li>TD-002 — accesos directos a almacenamiento local desde reglas de negocio</li>
+          <li>TD-003 — validación de correo duplicada entre módulos</li>
+          <li>
+            TD-004 / TD-008 / TD-009 — mensajes repetidos, contratos acoplados, capas insuficientes
+          </li>
+          <li>TD-006 / TD-007 — cobertura desigual y dependencia por modernizar</li>
+        </ul>
+        <table>
+          <thead>
+            <tr>
+              <th>Indicador</th>
+              <th>v0.1.0</th>
+              <th>v0.2.0</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cobertura sentencias</td>
+              <td>89.19 %</td>
+              <td class="good">90.02 %</td>
+            </tr>
+            <tr>
+              <td>
+                <span
+                  class="term"
+                  data-tip="Porcentaje de código copiado y pegado en vez de reutilizado. Más bajo es mejor."
+                  >Duplicación</span
+                >
+              </td>
+              <td>0.77 %</td>
+              <td class="good">0.71 %</td>
+            </tr>
+            <tr>
+              <td>
+                <span
+                  class="term"
+                  data-tip="Mide cuántos caminos distintos puede tomar una función. Más alto = más difícil de entender y probar."
+                  >Complejidad</span
+                >
+                máx.
+              </td>
+              <td>26</td>
+              <td>26 — igual</td>
+            </tr>
+            <tr>
+              <td>Líneas del legacy</td>
+              <td>580</td>
+              <td>580 — igual</td>
+            </tr>
+            <tr>
+              <td>Vulnerabilidades altas</td>
+              <td>0</td>
+              <td class="good">0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        En criollo: agregamos el carné virtual (código nuevo) y el módulo viejo no mejoró ni empeoró
+        — sigue exactamente igual de "enredado" que antes. Eso confirma que la deuda está encerrada
+        ahí y no se contagia al resto de la app.
+      </p>
+    </div>
+
+    <!-- Intervención -->
+    <div class="slide">
+      <span class="kicker">Medir el impacto</span>
+      <h2>La intervención de mantenimiento</h2>
+      <div class="grid cols-4">
+        <div class="card">
+          <span class="pill ready">Lista</span>
+          <h4 style="font-size: 14px; margin: 6px 0">1. Baseline</h4>
+          <p style="font-size: 12px">
+            v0.2.0 medida: complejidad 26, 580 líneas, duplicación 0.71 %, cobertura 90.02 %.
+          </p>
+        </div>
+        <div class="card">
+          <span class="pill pending">Pendiente</span>
+          <h4 style="font-size: 14px; margin: 6px 0">2. Intervención</h4>
+          <p style="font-size: 12px">
+            Refactorizar el servicio legacy: separar persistencia, validación y reglas de negocio.
+          </p>
+        </div>
+        <div class="card">
+          <span class="pill pending">Pendiente</span>
+          <h4 style="font-size: 14px; margin: 6px 0">3. Medición posterior</h4>
+          <p style="font-size: 12px">
+            Correr <code>npm run metrics</code> (complejidad, duplicación, auditoría) y
+            <code>npm run test:coverage</code> otra vez, ya con el código refactorizado.
+          </p>
+        </div>
+        <div class="card">
+          <span class="pill pending">Pendiente</span>
+          <h4 style="font-size: 14px; margin: 6px 0">4. Comparación</h4>
+          <p style="font-size: 12px">
+            Tabla antes/después con variación real, sin valores objetivo fijados de antemano.
+          </p>
+        </div>
+      </div>
+      <p class="note">
+        Por qué lo decimos así: no queremos mostrar una mejora inventada. El "antes" ya está medido
+        y es real; el cambio y el "después" se hacen y se miden antes de la entrega del 28, no se
+        están inventando ahora.
+      </p>
+    </div>
+
+    <!-- Evidencias -->
+    <div class="slide">
+      <span class="kicker">Todo es verificable</span>
+      <h2>Evidencias</h2>
+      <div class="grid cols-2">
+        <ul>
+          <li><strong>Repositorio</strong> — github.com/llipiterdev/appconecta-scm</li>
+          <li><strong>Aplicación desplegada</strong> — llipiterdev.github.io/appconecta-scm</li>
+          <li>
+            <strong
+              >Imagen de
+              <span
+                class="term"
+                data-tip="Paquete con la app y todo lo necesario para correrla igual en cualquier servidor, usando Docker."
+                >contenedor</span
+              ></strong
+            >
+            — ghcr.io/llipiterdev/appconecta-scm:0.2.0
+          </li>
+          <li>
+            <strong>Releases</strong> — v0.1.0 y v0.2.0, con artefacto y
+            <span
+              class="term"
+              data-tip="Huella digital única de un archivo: si el archivo cambia aunque sea un bit, el SHA-256 cambia. Sirve para verificar que no fue alterado."
+              >suma SHA-256</span
+            >
+          </li>
+        </ul>
+        <div class="grid cols-2">
+          <div class="stat">
+            <div class="num">13</div>
+            <div class="label">pull requests con checks en verde</div>
+          </div>
+          <div class="stat">
+            <div class="num">6</div>
+            <div class="label">baselines establecidas</div>
+          </div>
+          <div class="stat">
+            <div class="num">94</div>
+            <div class="label">pruebas automatizadas</div>
+          </div>
+          <div class="stat">
+            <div class="num">1</div>
+            <div class="label">hotfix real</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capturas -->
+    <div class="slide">
+      <span class="kicker">La aplicación</span>
+      <h2>AppConecta desplegada</h2>
+      <div class="grid cols-2">
+        <div>
+          <img class="shot" src="../docs/evidencias/capturas/01-dashboard-escritorio.png" />
+          <p class="caption">Dashboard en escritorio</p>
+        </div>
+        <div>
+          <img class="shot" src="../docs/evidencias/capturas/02-carne-virtual.png" />
+          <p class="caption">Carné virtual con QR</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cierre -->
+    <div class="slide dark">
+      <h1 style="font-size: 28px">Gracias</h1>
+      <p style="color: #cbd5e1; font-size: 14px; max-width: 520px; margin: 8px auto 0">
+        Repositorio real. Pipeline real. Deuda documentada y medida. Intervención de la Actividad 4
+        en curso antes de la entrega.
+      </p>
+      <p style="color: #94a3b8; font-size: 13px; margin-top: 20px">
+        github.com/llipiterdev/appconecta-scm
+      </p>
+    </div>
+  </body>
+</html>
