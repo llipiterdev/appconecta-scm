@@ -11,7 +11,7 @@ integrados mediante pull request; no se registran cambios que no existan en el h
 
 Sin cambios pendientes de publicación.
 
-## [0.3.0] — pendiente
+## [0.3.0] — 2026-08-26
 
 Entrega de cierre para la presentación final del curso. No introduce cambios funcionales en la
 aplicación; documenta y corrige aspectos de la entrega anterior.
