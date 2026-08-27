@@ -11,6 +11,25 @@ integrados mediante pull request; no se registran cambios que no existan en el h
 
 Sin cambios pendientes de publicación.
 
+## [0.3.0] — pendiente
+
+Entrega de cierre para la presentación final del curso. No introduce cambios funcionales en la
+aplicación; documenta y corrige aspectos de la entrega anterior.
+
+### Añadido
+
+- Presentación final del curso como página HTML estática, sin dependencias ni proceso de build,
+  publicada en `dist/presentacion/` junto con la aplicación (`3d948cb`).
+- Capturas de la aplicación desplegada, incorporadas al índice de evidencias de la Actividad 3
+  (`4be952f`).
+- Descripción funcional, stack y guía de ejecución local en el `README.md` (`233cd92`).
+
+### Corregido
+
+- Detección automática de la licencia MIT por GitHub: el aviso de copyright estaba partido en dos
+  líneas (`e191c5e`).
+- Referencia a un issue incorrecto en la matriz de trazabilidad (`e191dbd`).
+
 ## [0.2.0] — 2026-08-22
 
 Segunda entrega. Incorpora el carné virtual del colaborador y cierra el ciclo de automatización con
@@ -162,6 +181,7 @@ Medidas sobre esta versión y versionadas en `metrics-baseline.json`:
 - Todas las integraciones con sistemas corporativos son simuladas. No existe backend, base de
   datos, autenticación real ni datos personales reales.
 
-[no publicado]: https://github.com/llipiterdev/appconecta-scm/compare/v0.2.0...develop
+[no publicado]: https://github.com/llipiterdev/appconecta-scm/compare/v0.3.0...develop
+[0.3.0]: https://github.com/llipiterdev/appconecta-scm/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/llipiterdev/appconecta-scm/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/llipiterdev/appconecta-scm/releases/tag/v0.1.0
