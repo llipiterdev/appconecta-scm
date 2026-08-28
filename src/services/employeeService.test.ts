@@ -10,7 +10,7 @@ import {
   processSubmission,
   validateMedicalLeaveDraft,
   validateRequestDraft,
-} from '@/services/legacyEmployeeService';
+} from '@/services/employeeService';
 
 const validRequest = {
   kind: 'certificacion-laboral',

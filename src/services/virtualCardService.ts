@@ -11,7 +11,7 @@
  * propaga a la funcionalidad nueva.
  */
 
-import { getEmployeeProfile } from '@/services/legacyEmployeeService';
+import { getEmployeeProfile } from '@/adapters/employeeDirectoryAdapter';
 import type { EmployeeProfile, VirtualCard, VirtualCardStatus } from '@/types/domain';
 
 const CARD_PREFIX = 'APPCONECTA';
