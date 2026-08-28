@@ -141,9 +141,13 @@ scripts/           # Métricas de complejidad, control de no regresión y eviden
 documentado, pipeline de integración continua con siete verificaciones obligatorias, despliegue
 automático en GitHub Pages y publicación de artefactos e imagen en cada tag de versión.
 
-La deuda técnica **TD-001 a TD-009** está introducida de forma intencional, medida y reservada para
-la intervención de mantenimiento de la Actividad 4; ver
-[`docs/technical-debt-register.md`](docs/technical-debt-register.md).
+La intervención de mantenimiento de la Actividad 4 cerró **TD-001, TD-002, TD-003, TD-004, TD-005,
+TD-008 y TD-009** sobre el servicio legacy, reemplazando `legacyEmployeeService.ts` por una capa de
+dominio (`src/domain/`) y de adaptadores (`src/adapters/`), con mejora medida en complejidad,
+acoplamiento, duplicación y cobertura y sin retroceso en la baseline de v0.2.0. **TD-006** mejoró
+como efecto secundario y **TD-007** permanece abierta por decisión deliberada. Ver
+[`docs/technical-debt-register.md`](docs/technical-debt-register.md) y
+[`docs/maintenance-baseline.md`](docs/maintenance-baseline.md).
 
 ## Documentación
 
@@ -179,12 +183,13 @@ la intervención de mantenimiento de la Actividad 4; ver
 
 ### Contexto académico
 
-| Documento                                                            | Contenido                                       |
-| -------------------------------------------------------------------- | ----------------------------------------------- |
-| [Unidad 1](docs/unidad-1/analisis-evolucion.md)                      | Evolución, deuda técnica y mantenimiento        |
-| [Unidad 2](docs/unidad-2/estrategia-scm.md)                          | Estrategia de gestión de configuración          |
-| [Actividad 3](docs/unidad-3/actividad-3-control-versiones-devops.md) | Documento final: control de versiones y DevOps  |
-| [Evidencias](docs/evidencias/EVIDENCIAS.md)                          | Índice de issues, PR, tags, releases y métricas |
+| Documento                                                            | Contenido                                          |
+| -------------------------------------------------------------------- | -------------------------------------------------- |
+| [Unidad 1](docs/unidad-1/analisis-evolucion.md)                      | Evolución, deuda técnica y mantenimiento           |
+| [Unidad 2](docs/unidad-2/estrategia-scm.md)                          | Estrategia de gestión de configuración             |
+| [Actividad 3](docs/unidad-3/actividad-3-control-versiones-devops.md) | Documento final: control de versiones y DevOps     |
+| [Actividad 4](docs/unidad-4/actividad-4-mantenimiento-evolucion.md)  | Refactor del servicio legacy: antes/después medido |
+| [Evidencias](docs/evidencias/EVIDENCIAS.md)                          | Índice de issues, PR, tags, releases y métricas    |
 
 ## Integrantes
 
