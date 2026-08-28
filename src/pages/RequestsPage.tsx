@@ -5,7 +5,8 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Field, Select, Textarea, Input } from '@/components/ui/field';
-import { processSubmission } from '@/services/legacyEmployeeService';
+import { requestsRepository } from '@/adapters/requestsRepository';
+import { submitEmployeeRequest } from '@/domain/submitRequest';
 
 const kindOptions = [
   { value: '', label: 'Seleccione una opcion' },
@@ -26,7 +27,7 @@ export function RequestsPage() {
     event.preventDefault();
     setConfirmation(undefined);
 
-    const outcome = processSubmission('request', { kind, detail, contactEmail });
+    const outcome = submitEmployeeRequest({ kind, detail, contactEmail }, requestsRepository);
 
     if (!outcome.ok) {
       setErrors(outcome.errors);

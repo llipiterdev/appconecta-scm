@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 
-import { getMedicalLeaves } from '@/services/legacyEmployeeService';
+import { getMedicalLeaves } from '@/services/employeeService';
 import { renderRoute } from '@/test/renderRoute';
 
 const email = 'laura.restrepo@appconecta-demo.co';

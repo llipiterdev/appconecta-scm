@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 
-import { getEmployeeRequests } from '@/services/legacyEmployeeService';
+import { getEmployeeRequests } from '@/services/employeeService';
 import { renderRoute } from '@/test/renderRoute';
 
 const detail = 'Requiero una certificacion laboral con salario para tramite bancario.';
