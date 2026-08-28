@@ -12,7 +12,7 @@
 | ------------------------------- | --------------------------------------- | ---------------- |
 | Miguel Santiago Acevedo Virgues | Representante del cliente / RRHH        | `GeronimoAv`     |
 | Julian Camilo Corredor Rojas    | Responsable de gestión de configuración | `Jcorredor94`    |
-| Brayan Estif Calderon Gomez     | Responsable DevOps                      | pendiente        |
+| Brayan Estif Calderon Gomez     | Responsable DevOps                      | `llipiterdev`    |
 
 La distribución de roles y la matriz RACI están en [`docs/raci.md`](../raci.md). Conviene declararlo
 aquí sin rodeos: **la ejecución técnica en GitHub se centralizó en una sola identidad** para
