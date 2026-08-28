@@ -5,7 +5,7 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DefinitionEntry } from '@/components/ui/definitionEntry';
 import { useAsyncResource } from '@/hooks/useAsyncResource';
-import { getEmployeeProfile } from '@/services/legacyEmployeeService';
+import { getEmployeeProfile } from '@/adapters/employeeDirectoryAdapter';
 
 export function ProfilePage() {
   const loader = useCallback(() => getEmployeeProfile(), []);

@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
-import { processSubmission } from '@/services/legacyEmployeeService';
+import { processSubmission } from '@/services/employeeService';
 import { mainContent, renderRoute } from '@/test/renderRoute';
 
 const employeeName = 'Laura Catalina Restrepo Mejia';

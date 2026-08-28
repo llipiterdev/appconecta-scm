@@ -6,7 +6,8 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { buttonVariants } from '@/components/ui/buttonVariants';
-import { getEmployeeRequests, getMedicalLeaves } from '@/services/legacyEmployeeService';
+import { medicalLeavesRepository } from '@/adapters/medicalLeavesRepository';
+import { requestsRepository } from '@/adapters/requestsRepository';
 import type { SubmissionStatus } from '@/types/domain';
 
 const statusTones: Record<SubmissionStatus, 'info' | 'warning' | 'success' | 'danger'> = {
@@ -17,8 +18,8 @@ const statusTones: Record<SubmissionStatus, 'info' | 'warning' | 'success' | 'da
 };
 
 export function RequestStatusPage() {
-  const [requests] = useState(() => getEmployeeRequests());
-  const [leaves] = useState(() => getMedicalLeaves());
+  const [requests] = useState(() => requestsRepository.list());
+  const [leaves] = useState(() => medicalLeavesRepository.list());
 
   const isEmpty = requests.length === 0 && leaves.length === 0;
 

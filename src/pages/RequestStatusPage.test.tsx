@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
-import { processSubmission } from '@/services/legacyEmployeeService';
+import { processSubmission } from '@/services/employeeService';
 import { renderRoute } from '@/test/renderRoute';
 
 describe('Estado de las solicitudes', () => {

@@ -1,5 +1,13 @@
 # Arquitectura de la simulación AppConecta
 
+> **Nota de vigencia (2026-08-27).** Este documento describe la arquitectura **tal como estaba al
+> cerrar la Actividad 3 (v0.2.0)**, es decir, la baseline que motivó la intervención de la
+> Actividad 4. Deliberadamente no se reescribe para no perder esa referencia histórica (ver
+> `AGENTS.md`, "No reescribir historia publicada"). La arquitectura posterior a la refactorización
+> —capa de dominio, adaptadores, puertos— está descrita en
+> `docs/unidad-4/actividad-4-mantenimiento-evolucion.md` (sección 5) y en
+> `docs/maintenance-baseline.md`.
+
 > **Alcance.** Este documento describe la arquitectura de **lo que existe en este
 > repositorio**: una Progressive Web App que representa académicamente el cliente móvil de
 > AppConecta. No describe la arquitectura de un sistema empresarial en producción. Los cuatro

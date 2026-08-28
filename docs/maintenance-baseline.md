@@ -185,26 +185,55 @@ refactorización concentre primero el tratamiento de fechas en un solo punto.
 La columna «antes» recoge el estado al cerrar la Actividad 3, es decir **v0.2.0**. Para los
 indicadores del módulo legacy coincide con v0.1.0, porque el módulo no se tocó.
 
-| Dimensión                            | Antes (v0.2.0) | Después | Variación |
-| ------------------------------------ | -------------- | ------- | --------- |
-| Complejidad ciclomática máxima       | 26             | —       | —         |
-| Líneas de la función mayor           | 204            | —       | —         |
-| Líneas del archivo mayor             | 580            | —       | —         |
-| Complejidad acumulada del módulo     | 85             | —       | —         |
-| Duplicación del proyecto             | 0,71 %         | —       | —         |
-| Clones detectados                    | 2              | —       | —         |
-| Cobertura de sentencias              | 90,02 %        | —       | —         |
-| Cobertura de ramas                   | 75,43 %        | —       | —         |
-| Accesos directos a `localStorage`    | 8              | —       | —         |
-| Puertos de persistencia              | 0              | —       | —         |
-| Contratos sin adaptador              | 4              | —       | —         |
-| Importaciones directas al servicio   | 8              | —       | —         |
-| Capas con responsabilidad única      | 2 de 3         | —       | —         |
-| Vulnerabilidades `high` o `critical` | 0              | —       | —         |
+La columna «después» se midió el 2026-08-27 sobre el código de la intervención descrita en
+`docs/unidad-4/actividad-4-mantenimiento-evolucion.md`, ejecutando exactamente los comandos de la
+sección "Reproducción de la medición" de este documento. `metrics-baseline.json` sigue fijado en
+v0.2.0: el control de no regresión (`npm run metrics:gate`) comparó estos valores contra esa
+baseline y los nueve indicadores pasaron sin descender ninguno.
 
-**Las columnas "después" están vacías a propósito y no se rellenarán en esta actividad.**
+| Dimensión                                                 | Antes (v0.2.0)                                    | Después (post-refactor)                                         | Variación     |
+| --------------------------------------------------------- | ------------------------------------------------- | --------------------------------------------------------------- | ------------- |
+| Complejidad ciclomática máxima                            | 26 (`processSubmission`)                          | **9** (`submitMedicalLeave`)                                    | −17           |
+| Líneas de la función mayor                                | 204                                               | 45 aprox.                                                       | −159          |
+| Líneas del archivo mayor del módulo                       | 580 (`legacyEmployeeService.ts`, un solo archivo) | 141 (`domain/validation.ts`); ningún módulo nuevo supera 200    | −439          |
+| Complejidad acumulada (módulo)                            | 85 en 1 archivo                                   | 72 repartida en 16 módulos                                      | −13, disperso |
+| Duplicación del proyecto                                  | 0,71 %                                            | **0,29 %**                                                      | −0,42 pp      |
+| Clones detectados                                         | 2                                                 | **1** (0 dentro de `src/services/`)                             | −1            |
+| Cobertura de sentencias                                   | 90,02 %                                           | **94,57 %**                                                     | +4,55 pp      |
+| Cobertura de ramas                                        | 75,43 %                                           | **81,86 %**                                                     | +6,43 pp      |
+| Accesos directos a `localStorage` desde reglas de negocio | 8                                                 | **0** (concentrados en `adapters/localStorageRepository.ts`)    | −8            |
+| Puertos de persistencia                                   | 0                                                 | **2** (`RequestsRepositoryPort`, `MedicalLeavesRepositoryPort`) | +2            |
+| Contratos externos sin adaptador                          | 4                                                 | **0** (4 adaptadores en `src/adapters/*Adapter.ts`)             | −4            |
+| Importaciones directas al servicio legacy desde páginas   | 8                                                 | **0** (las páginas importan `domain/` y `adapters/`)            | −8            |
+| Capas con responsabilidad única                           | 2 de 3 (falta dominio)                            | **3 de 3** (`domain/`, `adapters/`, `pages/`)                   | +1            |
+| Vulnerabilidades `high` o `critical`                      | 0                                                 | 0                                                               | Ninguna       |
+
+Detalle de la medición «después»: 59 archivos y 136 funciones medidas por ESLint (frente a 40
+archivos y 104 funciones en la baseline), porque la refactorización reemplaza un módulo monolítico
+por 16 módulos pequeños en `src/domain/` y `src/adapters/`. Ese crecimiento en número de archivos
+es la consecuencia esperada de separar responsabilidades, no una regresión: ninguno de los 16
+módulos nuevos supera las 141 líneas, frente a las 580 del módulo que sustituyen.
+
+## Cierre de deuda por indicador
+
+| Deuda  | Criterio de cierre (resumen)                                                                                                                                    | Resultado                                                                                                                                                                                         | Estado                             |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| TD-001 | Persistencia, validación, transformación y reglas en módulos separados; ningún módulo > 200 líneas; cobertura no desciende; comportamiento observable no cambia | 16 módulos en `domain/` y `adapters/`, todos ≤ 141 líneas; las 98 pruebas pasan (las 21 originales de `processSubmission` sin modificar sus aserciones); cobertura sube en las cuatro dimensiones | **Cerrada**                        |
+| TD-002 | Cero accesos a `localStorage` desde reglas de negocio; reglas probables sin entorno DOM                                                                         | `src/domain/*` no referencia `window.localStorage`; el único punto que lo hace es `adapters/localStorageRepository.ts`, infraestructura pura                                                      | **Cerrada**                        |
+| TD-003 | jscpd reporta 0 clones en `src/services/`; duplicación de proyecto ≤ 0,3 %                                                                                      | 0 clones en `src/services/` y `src/domain/`; duplicación de proyecto 0,29 %                                                                                                                       | **Cerrada**                        |
+| TD-004 | Cada valor compartido definido una sola vez                                                                                                                     | Claves y límites en `adapters/constants.ts`; catálogos de etiquetas y plazos en `domain/requestRules.ts` y `domain/medicalLeaveRules.ts`                                                          | **Cerrada**                        |
+| TD-005 | Ninguna función > complejidad 10 ni > 60 líneas; pruebas existentes pasan sin modificar sus aserciones                                                          | Complejidad máxima 9; las 21 pruebas originales de `processSubmission` pasan intactas sobre `submitEmployeeRequest`/`submitMedicalLeave`                                                          | **Cerrada**                        |
+| TD-006 | Cobertura de ramas ≥ 80 % sin que descienda ningún otro indicador                                                                                               | Ramas 81,86 % (baseline 75,43 %); sentencias, funciones y líneas también suben                                                                                                                    | **Cerrada como efecto secundario** |
+| TD-007 | Cero usos de `moment`; tratamiento de fechas concentrado en un único módulo                                                                                     | Fuera de alcance, como estaba previsto. El tratamiento de fechas para presentación queda concentrado en `src/lib/momentEs.ts` y los 4 adaptadores                                                 | **Sigue abierta, deliberadamente** |
+| TD-008 | Ninguna clave `snake_case` de un sistema externo fuera de su adaptador                                                                                          | Las 24 claves de los 4 contratos mock solo se leen dentro de `src/adapters/*Adapter.ts`                                                                                                           | **Cerrada**                        |
+| TD-009 | Capa de dominio sin dependencias hacia infraestructura ni presentación; páginas no importan directamente el servicio de datos                                   | `src/domain/` no importa `src/adapters/` (solo tipos y puertos); 0 páginas de `src/pages/` importan `@/services/employeeService`                                                                  | **Cerrada**                        |
 
 ## Sobre los valores objetivo
+
+Este documento no fijó ningún valor objetivo antes de ejecutar la intervención, por la razón que
+sigue. Los resultados de la sección anterior no son una meta que se perseguía: son la medición
+posterior a una refactorización cuyo diseño estuvo condicionado únicamente por los criterios de
+cierre estructurales de `docs/technical-debt-register.md`, no por una cifra.
 
 No se define ningún valor objetivo en este documento. La razón no es cautela: un objetivo fijado
 antes de conocer el resultado real de la refactorización se convierte, en el momento de escribir el
@@ -213,7 +242,9 @@ informe, en una cifra que hay que justificar en lugar de en una medición que ha
 Los criterios de cierre de cada deuda —que sí están definidos en
 `docs/technical-debt-register.md`— son **condiciones estructurales verificables**, no cifras. Por
 ejemplo: «ninguna función del módulo supera complejidad 10» o «cero accesos a `localStorage` desde
-funciones con reglas de negocio». Son comprobables sin depender de que una cifra concreta se cumpla.
+funciones con reglas de negocio». La tabla de cierre anterior muestra, deuda por deuda, que esas
+condiciones se verificaron sobre el código real, no que el código se ajustó para acercarse a un
+número.
 
 ## Reproducción de la medición
 

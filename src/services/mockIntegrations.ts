@@ -4,14 +4,15 @@
  *
  * Ninguno de estos sistemas existe. Todos los datos son ficticios.
  *
- * DEUDA TECNICA TD-008 — Contratos de integracion mock fuertemente acoplados.
  * Las respuestas conservan deliberadamente la forma cruda que tendrian los sistemas
  * corporativos heredados: claves en espanol, `snake_case`, importes como cadena, fechas en
- * formato `DD/MM/YYYY` y codigos de estado numericos. No existe una capa de adaptacion entre
- * este contrato y el consumidor: `legacyEmployeeService` conoce estas claves directamente, de
- * modo que cualquier cambio en el sistema externo se propaga hasta la interfaz.
+ * formato `DD/MM/YYYY` y codigos de estado numericos. Es una decision de diseno del simulacro
+ * (ver `docs/adr/0001-simulation-scope.md`), no un defecto.
  *
- * Registrada en docs/technical-debt-register.md. No corregir sin una issue que lo autorice.
+ * TD-008 (registrada en docs/technical-debt-register.md) documentaba que ningun adaptador
+ * traducia este contrato al modelo de dominio. Desde la intervencion de la Actividad 4, los
+ * unicos modulos que conocen estas claves son los adaptadores de `src/adapters/*Adapter.ts`;
+ * el resto del dominio solo ve los tipos de `src/types/domain.ts`.
  */
 
 const DEFAULT_LATENCY_MS = 400;

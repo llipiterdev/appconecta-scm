@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Field, Select } from '@/components/ui/field';
 import { useAsyncResource } from '@/hooks/useAsyncResource';
-import { getLaborDocuments } from '@/services/legacyEmployeeService';
+import { getLaborDocuments } from '@/adapters/laborDocumentsAdapter';
 import type { LaborDocument } from '@/types/domain';
 
 const categoryOptions: Array<{ value: string; label: string }> = [

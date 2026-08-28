@@ -5,7 +5,7 @@ import { EmptyState } from '@/components/feedback/EmptyState';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAsyncResource } from '@/hooks/useAsyncResource';
-import { getPayslips } from '@/services/legacyEmployeeService';
+import { getPayslips } from '@/adapters/payrollAdapter';
 
 export function PayrollPage() {
   const loader = useCallback(() => getPayslips(), []);

@@ -6,7 +6,7 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAsyncResource } from '@/hooks/useAsyncResource';
-import { getAnnouncements } from '@/services/legacyEmployeeService';
+import { getAnnouncements } from '@/adapters/announcementsAdapter';
 import type { Announcement } from '@/types/domain';
 
 const categoryLabels: Record<Announcement['category'], string> = {
