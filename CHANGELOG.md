@@ -11,7 +11,44 @@ integrados mediante pull request; no se registran cambios que no existan en el h
 
 Sin cambios pendientes de publicación.
 
-## [0.3.0] — pendiente
+## [0.3.1] — 2026-08-27
+
+Actividad 4: intervención de mantenimiento correctivo sobre la deuda técnica medida en la
+Actividad 3. No añade capacidades observables por quien usa la aplicación; por eso se libera como
+`PATCH` y no como `MINOR`, aun cuando parte de los commits usa el tipo `feat` para las capas
+nuevas de dominio y adaptadores.
+
+Autorizada por [issue #35](https://github.com/llipiterdev/appconecta-scm/issues/35), integrada en
+`develop` mediante [PR #36](https://github.com/llipiterdev/appconecta-scm/pull/36).
+
+### Cambiado
+
+- Se eliminó `src/services/legacyEmployeeService.ts` (580 líneas, complejidad ciclomática máxima 26) y se sustituyó por una arquitectura en capas: `src/domain/` (puertos, validación, reglas de
+  negocio puras, casos de uso) y `src/adapters/` (repositorio de `localStorage`, adaptadores para
+  los cuatro contratos mock) (`c99ccda`, `b7a6aec`).
+- Las páginas dejaron de importar el servicio legacy y consumen los casos de uso y adaptadores
+  directamente (`566ab47`).
+
+### Corregido
+
+- TD-001, TD-002, TD-003, TD-004, TD-005, TD-008 y TD-009 quedan cerradas en
+  `docs/technical-debt-register.md`, con criterios de cierre medidos y verificados por
+  `npm run metrics:gate` contra la baseline `v0.2.0` sin retroceso. TD-006 mejora como efecto
+  secundario; TD-007 (`moment`) permanece abierta a propósito.
+- Complejidad ciclomática máxima: 26 → 9. Accesos a `localStorage` fuera de la capa de
+  persistencia: 8 → 0. Contratos externos sin adaptador: 4 → 0. Duplicación: 0,71 % → 0,29 %.
+  Cobertura de ramas: 75,43 % → 81,86 %.
+
+### Añadido
+
+- Documento técnico de la Actividad 4:
+  `docs/unidad-4/actividad-4-mantenimiento-evolucion.md`, con diagnóstico, estrategias,
+  implementación, evaluación de impacto y conclusiones.
+- Columna "Después" en `docs/maintenance-baseline.md` con las métricas medidas tras la
+  intervención.
+- 17 pruebas unitarias nuevas para las capas de dominio y adaptadores (98 pruebas en total).
+
+## [0.3.0] — 2026-08-26
 
 Entrega de cierre para la presentación final del curso. No introduce cambios funcionales en la
 aplicación; documenta y corrige aspectos de la entrega anterior.

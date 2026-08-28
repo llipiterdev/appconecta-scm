@@ -7,10 +7,34 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAsyncResource } from '@/hooks/useAsyncResource';
-import { getDashboardSummary } from '@/services/legacyEmployeeService';
+import { getAnnouncements } from '@/adapters/announcementsAdapter';
+import { getEmployeeProfile } from '@/adapters/employeeDirectoryAdapter';
+import { getLaborDocuments } from '@/adapters/laborDocumentsAdapter';
+import { medicalLeavesRepository } from '@/adapters/medicalLeavesRepository';
+import { getPayslips } from '@/adapters/payrollAdapter';
+import { requestsRepository } from '@/adapters/requestsRepository';
+import { buildDashboardSummary } from '@/domain/dashboard';
+
+async function loadDashboardSummary() {
+  const [profile, documents, payslips, announcements] = await Promise.all([
+    getEmployeeProfile(),
+    getLaborDocuments(),
+    getPayslips(),
+    getAnnouncements(),
+  ]);
+
+  return buildDashboardSummary(
+    profile,
+    documents,
+    payslips,
+    announcements,
+    requestsRepository.list(),
+    medicalLeavesRepository.list()
+  );
+}
 
 export function DashboardPage() {
-  const loader = useCallback(() => getDashboardSummary(), []);
+  const loader = useCallback(() => loadDashboardSummary(), []);
   const { data, isLoading, error, reload } = useAsyncResource(loader);
 
   return (

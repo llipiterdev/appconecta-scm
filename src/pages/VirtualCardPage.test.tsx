@@ -1,7 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import * as legacyEmployeeService from '@/services/legacyEmployeeService';
+import * as employeeDirectoryAdapter from '@/adapters/employeeDirectoryAdapter';
 import { mainContent, renderRoute } from '@/test/renderRoute';
 
 const employeeName = 'Laura Catalina Restrepo Mejia';
@@ -67,7 +67,7 @@ describe('Carne virtual del colaborador', () => {
   });
 
   it('presenta el estado de error y permite reintentar', async () => {
-    vi.spyOn(legacyEmployeeService, 'getEmployeeProfile').mockRejectedValue(
+    vi.spyOn(employeeDirectoryAdapter, 'getEmployeeProfile').mockRejectedValue(
       new Error('El directorio de colaboradores no respondio.')
     );
 

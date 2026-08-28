@@ -7,7 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Field, Input } from '@/components/ui/field';
-import { getMedicalLeaves, processSubmission } from '@/services/legacyEmployeeService';
+import { medicalLeavesRepository } from '@/adapters/medicalLeavesRepository';
+import { submitMedicalLeave } from '@/domain/submitMedicalLeave';
 import type { MedicalLeave } from '@/types/domain';
 
 export function MedicalLeavesPage() {
@@ -18,19 +19,16 @@ export function MedicalLeavesPage() {
   const [contactEmail, setContactEmail] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [confirmation, setConfirmation] = useState<string | undefined>(undefined);
-  const [leaves, setLeaves] = useState<MedicalLeave[]>(() => getMedicalLeaves());
+  const [leaves, setLeaves] = useState<MedicalLeave[]>(() => medicalLeavesRepository.list());
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setConfirmation(undefined);
 
-    const outcome = processSubmission('medical-leave', {
-      diagnosisCode,
-      startDate,
-      endDate,
-      entity,
-      contactEmail,
-    });
+    const outcome = submitMedicalLeave(
+      { diagnosisCode, startDate, endDate, entity, contactEmail },
+      medicalLeavesRepository
+    );
 
     if (!outcome.ok) {
       setErrors(outcome.errors);
@@ -40,7 +38,7 @@ export function MedicalLeavesPage() {
 
     setErrors({});
     setConfirmation(outcome.message);
-    setLeaves(getMedicalLeaves());
+    setLeaves(medicalLeavesRepository.list());
     setDiagnosisCode('');
     setStartDate('');
     setEndDate('');
