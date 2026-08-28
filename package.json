@@ -1,7 +1,7 @@
 {
   "name": "appconecta-scm",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Simulacion academica de AppConecta: control de versiones, gestion de configuracion y automatizacion DevOps",
   "license": "MIT",
   "type": "module",
